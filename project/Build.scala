@@ -13,12 +13,13 @@ object Dependencies {
   object http4s {
     val version = "0.12.3"
     val dsl = "org.http4s" %% "http4s-dsl" % version
+    val twirl = "org.http4s" %% "http4s-twirl" % version
     val blazeServer = "org.http4s" %% "http4s-blaze-server" % version
 //     val servlet = "org.http4s" %% "http4s-servlet" % version
 //     val jetty = "org.http4s" %% "http4s-jetty" % version
 //     val blazeClient = "org.http4s" %% "http4s-blaze-client" % version
 
-    val all = List(dsl, blazeServer)
+    val all = List(dsl, twirl, blazeServer)
   }
 
   object log {
