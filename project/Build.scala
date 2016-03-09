@@ -18,8 +18,15 @@ object Dependencies {
 //     val jetty = "org.http4s" %% "http4s-jetty" % version
 //     val blazeClient = "org.http4s" %% "http4s-blaze-client" % version
 
-    val deps = List(dsl, blazeServer)
+    val all = List(dsl, blazeServer)
   }
 
-  val all = http4s.deps
+  object log {
+    val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+    val logback = "ch.qos.logback" % "logback-classic" % "1.1.6"
+
+    val all = List(scalaLogging, logback)
+  }
+
+  val all = List.concat(http4s.all, log.all)
 }
