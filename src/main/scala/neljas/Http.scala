@@ -14,6 +14,9 @@ object Http extends TwirlInstances {
       Ok(html.index.render())
 
     case POST -> Root / "submit" =>
-      Ok("form was submitted!")
+      // TODO: parse from params
+      val u = new User("matti", 3)
+      // TODO: pass user object
+      Ok(html.result.render(u.name, u.age))
   }
 }
