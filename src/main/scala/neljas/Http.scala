@@ -12,5 +12,8 @@ object Http extends TwirlInstances {
 
     case GET -> Root =>
       Ok(html.index.render())
+
+    case POST -> Root / "submit" =>
+      Ok("form was submitted!")
   }
 }
