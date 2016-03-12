@@ -1,3 +1,29 @@
 package neljas
 
-case class User(name: String, age: Int)
+import org.http4s.UrlForm
+
+import scala.util.Try
+import scalaz.Scalaz._
+
+object User {
+  def fromForm(form: UrlForm): Either[String, User] = {
+    val result = validateForm(form)(User.apply)
+    result.toEither.leftMap(_.list.mkString(". "))
+  }
+
+  private def validateForm(form: UrlForm) =
+    stringField(form, "name") |@| intField(form, "age")
+
+  private def stringField(form: UrlForm, field: String) =
+    form.getFirst(field)
+      .toSuccess(s"Missing field '$field'")
+      .toValidationNel
+
+  private def intField(form: UrlForm, field: String) =
+    form.getFirst(field)
+      .flatMap(v => Try(v.toInt).toOption)
+      .toSuccess(s"Invalid format for field '$field'")
+      .toValidationNel
+}
+
+final case class User(name: String, age: Int)

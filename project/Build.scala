@@ -15,9 +15,6 @@ object Dependencies {
     val dsl = "org.http4s" %% "http4s-dsl" % version
     val twirl = "org.http4s" %% "http4s-twirl" % version
     val blazeServer = "org.http4s" %% "http4s-blaze-server" % version
-//     val servlet = "org.http4s" %% "http4s-servlet" % version
-//     val jetty = "org.http4s" %% "http4s-jetty" % version
-//     val blazeClient = "org.http4s" %% "http4s-blaze-client" % version
 
     val all = List(dsl, twirl, blazeServer)
   }
@@ -36,4 +33,29 @@ object Dependencies {
   }
 
   val all = List.concat(http4s.all, log.all, pdf.all)
+}
+
+object Warts {
+  import wartremover.WartRemover.autoImport.Wart._
+
+  val all = List(
+    Any,
+    Any2StringAdd,
+    AsInstanceOf,
+    Enumeration,
+    FinalCaseClass,
+    IsInstanceOf,
+    ListOps,
+    MutableDataStructures,
+    Nothing,
+    Null,
+    Option2Iterable,
+    OptionPartial,
+    Product,
+    Return,
+    Serializable,
+    ToString,
+    TryPartial,
+    Var
+  )
 }

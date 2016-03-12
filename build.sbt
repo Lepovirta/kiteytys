@@ -7,5 +7,5 @@ lazy val root = project
     scalaVersion := "2.11.8",
     resolvers ++= Resolvers.all,
     libraryDependencies ++= Dependencies.all,
-    wartremoverErrors ++= Warts.unsafe
+    wartremoverWarnings in (Compile, compile) := Warts.all
   )
