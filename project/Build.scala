@@ -30,7 +30,7 @@ object Dependencies {
   }
 
   object pdf {
-    val sPDF = "io.github.cloudify" %% "spdf" % "1.3.1"
+    val sPDF = "io.github.cloudify" %% "spdf" % "1.3.3"
 
     val all = List(sPDF)
   }
