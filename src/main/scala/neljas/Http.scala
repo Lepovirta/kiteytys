@@ -1,8 +1,12 @@
 package neljas
 
+import org.http4s.headers.{`Content-Type`}
+import org.http4s.MediaType._
 import org.http4s.HttpService
 import org.http4s.dsl._
 import org.http4s.twirl.TwirlInstances
+
+import neljas.pdf.PDF
 
 object Http extends TwirlInstances {
 
@@ -17,6 +21,8 @@ object Http extends TwirlInstances {
       // TODO: parse from params
       val u = User("matti", 3)
       // TODO: pass user object
-      Ok(html.result.render(u.name, u.age))
+      val page = html.result.render(u.name, u.age).toString()
+      val pdf = PDF.generate(page)
+      Ok(pdf).withContentType(Some(`Content-Type`(`application/pdf`)))
   }
 }
