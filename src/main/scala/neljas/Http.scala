@@ -1,6 +1,5 @@
 package neljas
 
-import com.typesafe.config._
 import org.http4s.headers.{`Content-Type`}
 import org.http4s.MediaType._
 import org.http4s.{UrlForm, HttpService}
@@ -10,17 +9,17 @@ import org.http4s.server.staticcontent
 import org.http4s.server.staticcontent.ResourceService.Config
 
 import neljas.pdf.PDF
+import neljas.conf.Settings
 
-object Http extends TwirlInstances {
+case class Http(conf: Settings) extends TwirlInstances {
 
-  private val conf   = ConfigFactory.load()
   private val static = cachedResource(Config("/static", "/static"))
 
   val route = HttpService {
     case r @ GET -> "static" /: _ => static(r)
 
     case GET -> Root / "conf" =>
-      Ok(conf.getString("smtp.port"))
+      Ok(conf.smtpPort.toString)
 
     case GET -> Root =>
       Ok(html.index.render())

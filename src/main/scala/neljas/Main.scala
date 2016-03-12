@@ -1,16 +1,24 @@
 package neljas
 
+import com.typesafe.config._
 import com.typesafe.scalalogging.{LazyLogging, Logger}
 import org.http4s.server.blaze.BlazeBuilder
 
+import neljas.conf.Conf
+
 object Main extends App with LazyLogging {
-  val port = Option(System.getenv("PORT")).map(_.toInt).getOrElse(8080)
+  if (Main.args.length < 1) {
+    throw new Exception("Configuration file argument missing.")
+  }
+
+  val conf = Conf.load(Main.args(0))
+  val port = conf.port
 
   logger.info("Starting server in port: {}", port.toString)
 
   BlazeBuilder
     .bindHttp(port)
-    .mountService(Http.route, "/")
+    .mountService(Http(conf).route, "/")
     .run
     .awaitShutdown()
 }
