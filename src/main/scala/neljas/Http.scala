@@ -21,7 +21,7 @@ object Http extends TwirlInstances {
       // TODO: parse from params
       val u = User("matti", 3)
       // TODO: pass user object
-      val page = html.result.render(u.name, u.age).toString()
+      val page = html.pdf.render(u.name, u.age).toString()
       val pdf = PDF.generate(page)
       Ok(pdf).withContentType(Some(`Content-Type`(`application/pdf`)))
   }
