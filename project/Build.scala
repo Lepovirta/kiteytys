@@ -32,7 +32,13 @@ object Dependencies {
     val all = List(sPDF)
   }
 
-  val all = List.concat(http4s.all, log.all, pdf.all)
+  object conf {
+    val typesafeConfig = "com.typesafe" % "config" % "1.3.0"
+
+    val all = List(typesafeConfig)
+  }
+
+  val all = List.concat(http4s.all, log.all, pdf.all, conf.all)
 }
 
 object Warts {
