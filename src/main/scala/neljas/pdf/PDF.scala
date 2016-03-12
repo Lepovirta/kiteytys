@@ -4,15 +4,12 @@ import io.github.cloudify.scala.spdf._
 import java.io._
 
 object PDF {
-  // Create a new Pdf converter with a custom configuration
-  // run `wkhtmltopdf --extended-help` for a full list of options
   val pdf = Pdf(new PdfConfig {
-    orientation := Landscape
-    pageSize := "Letter"
-    marginTop := "1in"
-    marginBottom := "1in"
-    marginLeft := "1in"
-    marginRight := "1in"
+    userStyleSheet := "static/pdf.css"
+    marginTop := "0mm"
+    marginBottom := "0mm"
+    marginLeft := "0mm"
+    marginRight := "0mm"
   })
 
   // TODO: error handlind?
