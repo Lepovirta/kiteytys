@@ -14,12 +14,13 @@ object Conf {
 }
 
 final case class Settings(conf: Config) {
-  val port    = conf.getInt("port")
-  val pdfPath = conf.getString("pdf_path")
+  val smtpConf = conf.getConfig("smtp")
 
-  val smtpHost     = conf.getString("smtp.host")
-  val smtpPort     = conf.getInt("smtp.port")
-  val smtpFrom     = conf.getString("smtp.from")
-  val smtpUser     = conf.getString("smtp.user")
-  val smtpPassword = conf.getString("smtp.passwd")
+  val port         = conf.getInt("port")
+  val pdfPath      = conf.getString("pdf_path")
+  val smtpHost     = smtpConf.getString("host")
+  val smtpPort     = smtpConf.getInt("port")
+  val smtpFrom     = smtpConf.getString("from")
+  val smtpUser     = smtpConf.getString("user")
+  val smtpPassword = smtpConf.getString("passwd")
 }
