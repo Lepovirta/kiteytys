@@ -7,7 +7,7 @@ import org.http4s.server.blaze.BlazeBuilder
 import neljas.conf.Conf
 
 object Main extends App with LazyLogging {
-  if (Main.args.length < 1) {
+  if (args.length < 1) {
     throw new Exception("Configuration file argument missing.")
   }
 
