@@ -13,7 +13,7 @@ object PDF {
   })
 
   // TODO: error handlind?
-  def generate(page: String) = {
+  def generate(page: String): Array[Byte] = {
     val output = new ByteArrayOutputStream
     val _ = pdf.run(page, output)
     output.toByteArray
