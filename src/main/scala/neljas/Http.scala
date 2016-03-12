@@ -9,16 +9,17 @@ import org.http4s.server.staticcontent
 import org.http4s.server.staticcontent.ResourceService.Config
 
 import neljas.pdf.PDF
+import neljas.conf.Settings
 
-object Http extends TwirlInstances {
+final case class Http(conf: Settings) extends TwirlInstances {
 
   private val static = cachedResource(Config("/static", "/static"))
 
   val route = HttpService {
     case r @ GET -> "static" /: _ => static(r)
 
-    case GET -> Root / "ping" =>
-      Ok("pong")
+    case GET -> Root / "conf" =>
+      Ok(conf.smtpPort.toString)
 
     case GET -> Root =>
       Ok(html.index.render())
