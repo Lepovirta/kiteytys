@@ -2,7 +2,7 @@ package neljas
 
 import org.http4s.headers.{`Content-Type`}
 import org.http4s.MediaType._
-import org.http4s.HttpService
+import org.http4s.{UrlForm, HttpService}
 import org.http4s.dsl._
 import org.http4s.twirl.TwirlInstances
 import org.http4s.server.staticcontent
@@ -23,13 +23,16 @@ object Http extends TwirlInstances {
     case GET -> Root =>
       Ok(html.index.render())
 
-    case POST -> Root / "submit" =>
-      // TODO: parse from params
-      val u = User("matti", 3)
-      // TODO: pass user object
-      val page = html.pdf.render(u.name, u.age).toString()
-      val pdf = PDF.generate(page)
-      Ok(pdf).withContentType(Some(`Content-Type`(`application/pdf`)))
+    case req @ POST -> Root / "submit" =>
+      req.decode[UrlForm] { form =>
+        User.fromForm(form) match {
+          case Left(errors) => BadRequest(errors)
+          case Right(user) =>
+            val page = html.pdf.render(user).toString()
+            val pdf = PDF.generate(page)
+            Ok(pdf).withContentType(Some(`Content-Type`(`application/pdf`)))
+        }
+      }
   }
 
   private def cachedResource(config: Config): HttpService = {
