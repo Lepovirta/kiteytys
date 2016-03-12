@@ -11,7 +11,7 @@ import org.http4s.server.staticcontent.ResourceService.Config
 import neljas.pdf.PDF
 import neljas.conf.Settings
 
-case class Http(conf: Settings) extends TwirlInstances {
+final case class Http(conf: Settings) extends TwirlInstances {
 
   private val static = cachedResource(Config("/static", "/static"))
 

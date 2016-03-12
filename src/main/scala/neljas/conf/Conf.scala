@@ -13,7 +13,7 @@ object Conf {
   }
 }
 
-case class Settings(conf: Config) {
+final case class Settings(conf: Config) {
   val port    = conf.getInt("port")
   val pdfPath = conf.getString("pdf_path")
 
