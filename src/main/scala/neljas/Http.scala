@@ -15,7 +15,7 @@ object Http extends TwirlInstances {
   private val static = cachedResource(Config("/static", "/static"))
 
   val route = HttpService {
-    case r @ GET -> _ if r.pathInfo.startsWith("/static") => static(r)
+    case r @ GET -> "static" /: _ => static(r)
 
     case GET -> Root / "ping" =>
       Ok("pong")
