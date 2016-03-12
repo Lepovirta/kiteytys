@@ -29,5 +29,11 @@ object Dependencies {
     val all = List(scalaLogging, logback)
   }
 
-  val all = List.concat(http4s.all, log.all)
+  object pdf {
+    val sPDF = "io.github.cloudify" %% "spdf" % "1.3.1"
+
+    val all = List(sPDF)
+  }
+
+  val all = List.concat(http4s.all, log.all, pdf.all)
 }
