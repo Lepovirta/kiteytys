@@ -38,6 +38,8 @@ object Dependencies {
 
   val pdf = List("io.github.cloudify" %% "spdf" % "1.3.3")
 
+  val email = List("org.apache.commons" % "commons-email" % "1.4")
+
   val conf = List("com.typesafe" % "config" % "1.3.0")
 
   val json = {
@@ -45,5 +47,5 @@ object Dependencies {
     List("io.argonaut" %% "argonaut" % argonautVersion)
   }
 
-  val all = List.concat(db, http4s, logging, pdf, conf, json)
+  val all = List.concat(db, http4s, logging, pdf, email, conf, json)
 }

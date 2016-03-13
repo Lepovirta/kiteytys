@@ -28,12 +28,12 @@ object User {
   import FormParsing._
 
   def fromForm(form: UrlForm): Either[String, User] = {
-    val result = (stringField(form, "name") |@| intField(form, "age"))(User.apply)
+    val result = (stringField(form, "name") |@| intField(form, "age") |@| stringField(form, "email"))(User.apply)
     resultToEither(result)
   }
 }
 
-final case class User(name: String, age: Int)
+final case class User(name: String, age: Int, email: String)
 
 object Message {
   import FormParsing._

@@ -1,28 +1,30 @@
 package neljas
 
 import com.typesafe.scalalogging.LazyLogging
-import neljas.conf.Settings
 import neljas.db.Repositories
+import neljas.email.Mailer
 import neljas.pdf.PDF
 import org.http4s.MediaType._
+import org.http4s._
 import org.http4s.dsl._
 import org.http4s.headers.`Content-Type`
 import org.http4s.server.staticcontent.ResourceService.Config
 import org.http4s.server.{Router, staticcontent}
 import org.http4s.twirl.TwirlInstances
-import org.http4s._
 
 import scalaz.concurrent.Task
 
-final class Http(conf: Settings, repos: Repositories) extends TwirlInstances with Conversions with LazyLogging {
+
+final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
+  extends TwirlInstances with Conversions with LazyLogging {
 
   private val static = cachedResource(Config("/static", "/static"))
 
   val rootService = HttpService {
     case r @ GET -> "static" /: _ => static(r)
 
-    case GET -> Root / "conf" =>
-      Ok(conf.smtp.port.toString)
+    case GET -> Root / "ping" =>
+      Ok("pong")
 
     case GET -> Root =>
       Ok(html.index.render())
@@ -30,8 +32,12 @@ final class Http(conf: Settings, repos: Repositories) extends TwirlInstances wit
     case req @ POST -> Root / "submit" =>
       parseForm(req, User.fromForm) { user =>
         val page = html.pdf.render(user).toString()
-        val pdf = PDF.generate(page)
-        Ok(pdf).withContentType(Some(`Content-Type`(`application/pdf`)))
+        val result = for {
+          bytes <- pdf.generate(page)
+          _ <- pdf.save(bytes)
+          _ <- mailer.sendPDF(user, bytes)
+        } yield bytes
+        Ok(result).withContentType(Some(`Content-Type`(`application/pdf`)))
       }
   }
 
