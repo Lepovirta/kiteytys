@@ -8,7 +8,7 @@ $(document).ready(function(){
     "Sy&ouml;t&auml; toimiva s&auml;hk&ouml;postiosoite"
   );
 
-  $('#crystallized').validate();
+  $('#game_form').validate();
 
   $('.required').each(function () {
     $(this).rules('add', {
@@ -25,10 +25,6 @@ $(document).ready(function(){
         strictemail: true
       });
     });
-  });
-
-  $('#errors a').on('click', function() {
-      $('#errors').slideUp();
   });
 
 });
