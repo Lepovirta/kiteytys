@@ -13,13 +13,13 @@ object Mailer {
   val attDesc = "description"
 
   def sendPDF(ed: EmailData): Unit = {
-    var attachment = new EmailAttachment()
+    val attachment = new EmailAttachment()
     attachment.setPath(ed.filePath)
     attachment.setDisposition(EmailAttachment.ATTACHMENT)
     attachment.setDescription(attDesc)
     attachment.setName(attName)
 
-    var email = new MultiPartEmail()
+    val email = new MultiPartEmail()
     email.setHostName(ed.host)
     email.setSmtpPort(ed.port)
     email.setAuthenticator(new DefaultAuthenticator(ed.user, ed.password))
