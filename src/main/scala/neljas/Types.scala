@@ -43,8 +43,8 @@ object Game {
       intField(form, "inspiringNum")     |@|
       stringField(form, "topaasia")      |@|
       stringField(form, "openQuestion")  |@|
-      intField(form, "rating")           |@|
-    )(Game.apply) |@|
+      intField(form, "rating")
+    )(Game.apply)
     resultToEither(result)
   }
 }

@@ -16,52 +16,30 @@ import scalaz.concurrent.Task
 
 
 final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
-  extends TwirlInstances with Conversions with LazyLogging {
+  extends TwirlInstances with LazyLogging {
 
   private val static = cachedResource(Config("/static", "/static"))
 
   val rootService = HttpService {
     case r @ GET -> "static" /: _ => static(r)
 
-    case GET -> Root / "ping" =>
-      Ok("pong")
-
     case GET -> Root =>
       Ok(html.index.render())
 
     case req @ POST -> Root / "submit" =>
-      parseForm(req, User.fromForm) { user =>
-        val page = html.pdf.render(user).toString()
+      parseForm(req, Game.fromForm) { game =>
+        val page = html.pdf.render(game).toString()
         val result = for {
           bytes <- pdf.generate(page)
           _ <- pdf.save(bytes)
-          _ <- mailer.sendPDF(user, bytes)
+          _ <- mailer.sendPDF(game.email, bytes)
         } yield bytes
         Ok(result).withContentType(Some(`Content-Type`(`application/pdf`)))
       }
   }
 
-  val messageService = HttpService {
-    case GET -> Root =>
-      val result = repos.message.fetchAll
-      Ok(result)
-
-    case req @ POST -> Root =>
-      req.decode[Message] { message =>
-        val result = repos.message.create(message).map(_.toString)
-        Ok(result)
-      }
-
-    case GET -> Root / LongVar(id) =>
-      repos.message.fetchById(id).flatMap {
-        case Some(msg) => Ok(msg)
-        case None => NotFound(s"Could not found message #$id")
-      }
-  }
-
   val service = Router(
-    "" -> rootService,
-    "/message" -> messageService
+    "" -> rootService
   )
 
   private def parseForm[A](req: Request, parse: UrlForm => Either[String, A])(f: A => Task[Response]): Task[Response] =
