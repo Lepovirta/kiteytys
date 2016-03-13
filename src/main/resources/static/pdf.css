@@ -1,0 +1,73 @@
+html {
+    font-size: 62.5%;
+}
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    color: #000;
+    background: #FFF;
+}
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    color: #FFF;
+}
+#logo {
+    width: 109px;
+    height: 100px;
+    padding: 10px;
+}
+.flow {
+    width: 80%;
+    padding: 1.5em;
+    margin: 1.5em auto;
+    background: #3a3a3c;
+}
+p {
+    margin: 0;
+}
+p span {
+    font-weight: bold !important;
+}
+a {
+    color: #0892b6;
+}
+a:hover {
+    color: #044859;
+}
+h1 {
+    background: #3a3a3c;
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 120px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 10px;
+    text-shadow: 0 1px 3px #3a3a3c;
+}
+h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 32px;
+}
+footer {
+    font-weight: bold;
+    padding: 1em 0;
+    background: #3a3a3c;
+    line-height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}

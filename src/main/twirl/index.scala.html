@@ -2,19 +2,132 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>NeljäS</title>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Kiteyttäjä by Gälliwashere.com</title>
+  <link rel="shortcut icon" href="/static/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="/static/main.css" />
 </head>
 <body>
-    <h1>Hello world!</h1>
-    <form id="user_form" method="post" action="/submit">
-        <label for="name">Name:</label>
-        <input type="text" id="name" placeholder="Type name" name="user[name]" />
-        <label for="age">Age:</label>
-        <input type="text" id="age" placeholder="Type age" name="user[age]" />
-        <label for="email">Email:</label>
-        <input type="text" id="email" placeholder="Type email" name="user[email]" />
-        <button type="submit">Submit</button>
-    </form>
+<div id="wrapper">
+  <header>
+    <div id="logo"></div>
+    <h1>Kiteyttäjä</h1>
+  </header>
+  <form id="game_form" method="post" action="/submit">
+
+    <h2>Perustiedot</h2>
+    <div class="flow">
+      <div class="row">
+        <label for="identifier">Pelitunniste</label>
+        <input class="required" type="text" name="game[identifier]" id="identifier" autofocus="autofocus" />
+        <label for="email">Sähköposti</label>
+        <input class="email" type="email" name="game[email]" id="email" />
+      </div>
+    </div>
+
+    <div id="slider-handles"></div>
+
+    <h2>Pelilaudalle valikoituneet kortit</h2>
+    <div class="flow">
+      <div class="row">
+        <div class="col">
+          <label for="strong">Vahvin</label>
+          <input type="text" name="game[strong]" id="strong" />
+        </div>
+        <div class="col">
+          <label for="strong-num">Arvosana</label>
+          <input id="strong-num" type="number" name="game[strongNum]" min="1" max="4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="row">
+        <div class="col">
+          <label for="weak">Heikoin</label>
+          <input type="text" name="game[weak]" id="weak" />
+        </div>
+        <div class="col">
+          <label for="weak-num">Arvosana</label>
+          <input id="weak-num" type="number" name="game[weakNum]" min="1" max="4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="row">
+        <div class="col">
+          <label for="important">Tärkein</label>
+          <input type="text" name="game[important]" id="important" />
+        </div>
+        <div class="col">
+          <label for="important-num">Arvosana</label>
+          <input id="important-num" type="number" name="game[importantNum]" min="1" max="4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="row">
+        <div class="col">
+          <label for="hard">Vaikein</label>
+          <input type="text" name="game[hard]" id="hard" />
+        </div>
+        <div class="col">
+          <label for="hard-num">Arvosana</label>
+          <input id="hard-num" type="number" name=game[hardNum]" min="1" max="4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="row">
+        <div class="col">
+          <label for="tedious">Ikävin</label>
+          <input type="text" name="game[tedious]" id="tedious" />
+        </div>
+        <div class="col">
+          <label for="tedious-num">Arvosana</label>
+          <input id="tedious-num" type="number" name=game[tediousNum]" min="1" max="4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="row">
+        <div class="col">
+          <label for="inspiring">Innostavin</label>
+          <input type="text" name="game[inspiring]" id="inspiring" />
+        </div>
+        <div class="col">
+          <label for="inspiring-num">Arvosana</label>
+          <input id="inspiring-num" type="number" name="game[inspiringNum]" min="1" max="4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="row">
+        <label for="topaasia">Topaasia</label>
+        <input type="text" name="game[topaasia]" id="topaasia" />
+      </div>
+      <div class="row">
+        <label for="openQuestion">Miksi tämä on meidän mielestämme tärkein (Topaasia)?</label>
+        <textarea id="openQuestion" name="game[openQuestion]"></textarea>
+      </div>
+      <div class="row">
+        <label for="rating">Käytettyyn aikaan nähden saatu hyöty</label>
+        <input type="number" min="1" max="5" name="game[rating]" id="rating" />
+      </div>
+    </div>
+    <button type="submit">Lähetä lomake</button>
+  </form>
+</div>
+<footer class="center">We Make Organizational Development Games! - <a href="http://www.galliwashere.com" title="Gälliwashere.com">Gälliwashere 2015 &copy;</a> | Software by <a href="https://lepo.io" title="lepo.io">Lepo.IO</a></footer>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js" ></script>
+<script type="text/javascript" src="/static/messages_fi.js"></script>
+<script type="text/javascript" src="/static/custom.js"></script>
 </body>
 </html>
