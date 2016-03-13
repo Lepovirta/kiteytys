@@ -3,7 +3,6 @@ package neljas.email
 import javax.mail.util.ByteArrayDataSource
 
 import com.typesafe.scalalogging.LazyLogging
-import neljas.User
 import neljas.conf.Conf
 import org.apache.commons.mail.{EmailException, EmailAttachment, DefaultAuthenticator, MultiPartEmail}
 
@@ -11,18 +10,33 @@ import scalaz.concurrent.Task
 
 final class Mailer(conf: Conf.Smtp) extends LazyLogging {
 
-  val message = "Hello!"
-  val subject = "Subj"
+  val subject = "Kiteyttäjä"
+  val message = """Moi!
+    |
+    |Toivottavasti pelihetki oli antoisa - tässä Kiteyttäjä. Huomaat Kiteyttäjän visuaalisen kauneusleikkauksen etenemisen tässä matkan varrella.
+    |
+    |Me uskomme palautteen voimaan. Haasta meidät palautteella niin tulet huomaamaan kehityksen seuraavaan pelisessioon mennessä.
+    |
+    |Risut, ruusut ja pajut voi ohjata esimerkiksi johonkin seuraavista:
+    |
+    |galla@galliwashere.com
+    |0400246626
+    |@jussigalla
+    |
+    |innolla,
+    |gällit
+    |
+    |Play. Focus. Do. Repeat"""
 
-  val attachmentName = "attachment.pdf"
+  val attachmentName = "Kiteyttaja.pdf"
   val attachmentDescription = "PDF"
   val attachmentMime = "application/pdf"
 
-  def sendPDF(recipient: User, data: Array[Byte]): Task[String] = {
+  def sendPDF(recipient: String, data: Array[Byte]): Task[String] = {
     val email = dataToEmail(recipient, data)
     try {
       val result = email.send()
-      logger.info(s"Sent email to ${recipient.email}. Message ID: $result")
+      logger.info(s"Sent email to ${recipient}. Message ID: $result")
       Task.now(result)
     } catch {
       case ex: EmailException => Task.fail(ex)
@@ -30,14 +44,14 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
     }
   }
 
-  private def dataToEmail(recipient: User, data: Array[Byte]) = {
+  private def dataToEmail(recipient: String, data: Array[Byte]) = {
     val email = new MultiPartEmail()
 
     email.setHostName(conf.host)
     email.setSmtpPort(conf.port)
     email.setAuthenticator(new DefaultAuthenticator(conf.user, conf.password))
     email.setSSLOnConnect(true)
-    email.addTo(recipient.email, recipient.name)
+    email.addTo(recipient, recipient)
     email.setFrom(conf.from, conf.fromName)
     email.setSubject(subject)
     email.setMsg(message)

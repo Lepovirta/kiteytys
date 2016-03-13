@@ -1,8 +1,6 @@
 package neljas
 
 import org.http4s.UrlForm
-import argonaut._
-import Argonaut._
 import scala.util.Try
 import scalaz.Scalaz._
 import scalaz.ValidationNel
@@ -24,27 +22,37 @@ object FormParsing {
       .toValidationNel
 }
 
-object User {
+object Game {
   import FormParsing._
 
-  def fromForm(form: UrlForm): Either[String, User] = {
-    val result = (stringField(form, "name") |@| intField(form, "age") |@| stringField(form, "email"))(User.apply)
+  def fromForm(form: UrlForm): Either[String, Game] = {
+    val result = (
+      stringField(form, "identifier")    |@|
+      stringField(form, "email")         |@|
+      stringField(form, "strongCard")    |@|
+      intField(form, "strongNum")        |@|
+      stringField(form, "weakCard")      |@|
+      intField(form, "weakNum")          |@|
+      stringField(form, "importantCard") |@|
+      intField(form, "importantNum")     |@|
+      stringField(form, "hardCard")      |@|
+      intField(form, "hardNum")          |@|
+      stringField(form, "tediousCard")   |@|
+      intField(form, "tediousNum")       |@|
+      stringField(form, "inspiringCard") |@|
+      intField(form, "inspiringNum")     |@|
+      stringField(form, "topaasia")      |@|
+      stringField(form, "openQuestion")  |@|
+      intField(form, "rating")           |@|
+    )(Game.apply) |@|
     resultToEither(result)
   }
 }
 
-final case class User(name: String, age: Int, email: String)
-
-object Message {
-  import FormParsing._
-
-  def fromForm(form: UrlForm): Either[String, Message] = {
-    val result = (stringField(form, "title") |@| stringField(form, "content"))(Message.apply)
-    resultToEither(result)
-  }
-
-  implicit val messageJsonCodec: CodecJson[Message] =
-    casecodec2(Message.apply, Message.unapply)("title", "content")
-}
-
-final case class Message(title: String, content: String)
+final case class Game(
+  identifier: String, email: String, strongCard: String, strongNum: Int,
+  weakCard: String, weakNum: Int, importantCard: String, importantNum: Int,
+  hardCard: String, hardNum: Int, tediousCard: String, tediousNum: Int,
+  inspiringCard: String, inspiringNum: Int, topaasia: String,
+  openQuestion: String, rating: Int
+)

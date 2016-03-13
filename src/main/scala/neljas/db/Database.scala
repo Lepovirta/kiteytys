@@ -38,9 +38,9 @@ final class Database(conf: Conf.Database) extends LazyLogging {
 }
 
 final class Repositories(xa: Transactor[Task]) {
-  val message = new MessageRepository(xa)
+  val game = new GameRepository(xa)
 
-  val all: List[Repository] = List(message)
+  val all: List[Repository] = List(game)
 
   def initSchemas: Task[Unit] =
     Nondeterminism[Task].reduceUnordered[Unit, Unit](all.map(_.initSchema))
