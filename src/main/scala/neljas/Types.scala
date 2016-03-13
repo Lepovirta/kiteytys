@@ -5,6 +5,8 @@ import org.http4s.UrlForm
 import scala.util.Try
 import scalaz.Scalaz._
 
+import neljas.conf.Settings
+
 object User {
   def fromForm(form: UrlForm): Either[String, User] = {
     val result = validateForm(form)(User.apply)
@@ -27,3 +29,18 @@ object User {
 }
 
 final case class User(name: String, age: Int)
+
+final case class Attachment(path: String, description: String, name: String)
+
+final case class EmailData(conf: Settings, toAddr: String, subj: String) {
+  val host = conf.smtpHost
+  val port = conf.smtpPort
+  val user = conf.smtpUser
+  val password = conf.smtpPassword
+  val to = toAddr
+  val toName = to
+  val from = conf.smtpFrom
+  val fromName = conf.smtpFromName
+  val subject = subj
+  val attachment = Attachment("path", "description", "name")
+}
