@@ -7,13 +7,17 @@ import neljas.EmailData
 object Mailer {
 
   val message = "Hello!"
+  val subject = "Subj"
+
+  val attName = "attachment"
+  val attDesc = "description"
 
   def sendPDF(ed: EmailData): Unit = {
     var attachment = new EmailAttachment()
-    attachment.setPath(ed.attachment.path)
+    attachment.setPath(ed.filePath)
     attachment.setDisposition(EmailAttachment.ATTACHMENT)
-    attachment.setDescription(ed.attachment.description)
-    attachment.setName(ed.attachment.name)
+    attachment.setDescription(attDesc)
+    attachment.setName(attName)
 
     var email = new MultiPartEmail()
     email.setHostName(ed.host)
@@ -22,7 +26,7 @@ object Mailer {
     email.setSSLOnConnect(true)
     email.addTo(ed.to, ed.toName)
     email.setFrom(ed.from, ed.fromName)
-    email.setSubject(ed.subject)
+    email.setSubject(subject)
     email.setMsg(message)
 
     email.attach(attachment)
