@@ -43,6 +43,9 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
             BadRequest(html.index(form, Some(err.getMessage)))
         }
       }
+
+    case _ =>
+      NotFound(html.notFound.render())
   }
 
   val service = Router(
