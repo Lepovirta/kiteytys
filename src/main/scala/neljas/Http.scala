@@ -12,6 +12,7 @@ import org.http4s.server.staticcontent.ResourceService.Config
 import org.http4s.server.{Router, staticcontent}
 import org.http4s.twirl.TwirlInstances
 
+import scalaz.{-\/, \/-}
 import scalaz.concurrent.Task
 
 
@@ -24,17 +25,23 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
     case r @ GET -> "static" /: _ => static(r)
 
     case GET -> Root =>
-      Ok(html.index.render())
+      Ok(html.index())
 
     case req @ POST -> Root / "submit" =>
-      parseForm(req, Game.fromForm) { game =>
-        val page = html.pdf.render(game).toString()
+      req.decode[UrlForm] { form =>
         val result = for {
-          bytes <- pdf.generate(page)
+          game <- gameDataFromForm(form)
+          bytes <- pdf.generate(html.pdf.render(game).toString)
           _ <- pdf.save(bytes)
           _ <- mailer.sendPDF(game.email, bytes)
         } yield bytes
-        Ok(result).withContentType(Some(`Content-Type`(`application/pdf`)))
+
+        result.attempt.flatMap {
+          case \/-(bytes) =>
+            Ok(bytes).withContentType(Some(`Content-Type`(`application/pdf`)))
+          case -\/(err) =>
+            BadRequest(html.index(form, Some(err.getMessage)))
+        }
       }
   }
 
@@ -42,12 +49,10 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
     "" -> rootService
   )
 
-  private def parseForm[A](req: Request, parse: UrlForm => Either[String, A])(f: A => Task[Response]): Task[Response] =
-    req.decode[UrlForm] { form =>
-      parse(form) match {
-        case Left(errors) => BadRequest(errors)
-        case Right(model) => f(model)
-      }
+  private def gameDataFromForm(form: UrlForm): Task[Game] =
+    Game.fromForm(form) match {
+      case Left(errors) => Task.fail(new RuntimeException(errors))
+      case Right(game) => Task.now(game)
     }
 
   private def cachedResource(config: Config): HttpService = {

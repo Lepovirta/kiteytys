@@ -1,4 +1,4 @@
-@()
+@(form: org.http4s.UrlForm = org.http4s.UrlForm.empty, errors: Option[String] = None)
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,6 +14,11 @@
     <div id="logo"></div>
     <h1>Kiteyttäjä</h1>
   </header>
+
+  @for(error <- errors) {
+    <p>Virhe tapahtui lähettäessä lomaketta: @error</p>
+  }
+
   <form id="game_form" method="post" action="/submit">
 
     <h2>Perustiedot</h2>
