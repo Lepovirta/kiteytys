@@ -14,14 +14,24 @@ object Conf {
 }
 
 final case class Settings(conf: Config) {
-  val smtpConf = conf.getConfig("smtp")
-
   val port         = conf.getInt("port")
   val pdfPath      = conf.getString("pdf_path")
-  val smtpHost     = smtpConf.getString("host")
-  val smtpPort     = smtpConf.getInt("port")
-  val smtpFrom     = smtpConf.getString("from")
-  val smtpFromName = smtpConf.getString("fromName")
-  val smtpUser     = smtpConf.getString("user")
-  val smtpPassword = smtpConf.getString("passwd")
+  val smtp         = Smtp(conf.getConfig("smtp"))
+  val database     = Database(conf.getConfig("database"))
+}
+
+final case class Smtp(conf: Config) {
+  val host     = conf.getString("host")
+  val port     = conf.getInt("port")
+  val from     = conf.getString("from")
+  val fromName = conf.getString("fromName")
+  val user     = conf.getString("username")
+  val password = conf.getString("password")
+}
+
+final case class Database(conf: Config) {
+  val driver = conf.getString("driver")
+  val url = conf.getString("url")
+  val username = conf.getString("username")
+  val password = conf.getString("password")
 }

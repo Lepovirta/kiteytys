@@ -6,6 +6,5 @@ lazy val root = project
     version := "0.1-SNAPSHOT",
     scalaVersion := "2.11.8",
     resolvers ++= Resolvers.all,
-    libraryDependencies ++= Dependencies.all,
-    wartremoverWarnings in (Compile, compile) := Warts.all
+    libraryDependencies ++= Dependencies.all
   )
