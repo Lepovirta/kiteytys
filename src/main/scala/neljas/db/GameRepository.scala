@@ -14,7 +14,7 @@ class GameRepository(xa: Transactor[Task]) extends Repository {
         email         VARCHAR NOT NULL,
         strongCard    VARCHAR NOT NULL,
         strongNum     INT NOT NULL,
-        weakCard      ARCHAR NOT NULL,
+        weakCard      VARCHAR NOT NULL,
         weakNum       INT NOT NULL,
         importantCard VARCHAR NOT NULL,
         importantNum  INT NOT NULL,

@@ -17,6 +17,7 @@ object Conf {
     val fromName = conf.getString("fromName")
     val user     = conf.getString("username")
     val password = conf.getString("password")
+    val ssl      = conf.getBoolean("ssl")
   }
 
   final case class Database(conf: Config) {
