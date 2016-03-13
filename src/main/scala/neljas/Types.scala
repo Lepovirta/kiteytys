@@ -14,7 +14,7 @@ object User {
   }
 
   private def validateForm(form: UrlForm) =
-    stringField(form, "name") |@| intField(form, "age")
+    stringField(form, "name") |@| intField(form, "age") |@| stringField(form, "email")
 
   private def stringField(form: UrlForm, field: String) =
     form.getFirst(field)
@@ -28,7 +28,7 @@ object User {
       .toValidationNel
 }
 
-final case class User(name: String, age: Int)
+final case class User(name: String, age: Int, email: String)
 
 final case class EmailData(conf: Settings, toAddr: String, path: String) {
   val host = conf.smtpHost

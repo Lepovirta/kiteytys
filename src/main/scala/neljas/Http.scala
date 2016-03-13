@@ -10,6 +10,8 @@ import org.http4s.server.staticcontent.ResourceService.Config
 
 import neljas.pdf.PDF
 import neljas.conf.Settings
+import neljas.util.Util
+import neljas.email.Mailer
 
 final case class Http(conf: Settings) extends TwirlInstances {
 
@@ -30,7 +32,10 @@ final case class Http(conf: Settings) extends TwirlInstances {
           case Left(errors) => BadRequest(errors)
           case Right(user) =>
             val page = html.pdf.render(user).toString()
-            val pdf = PDF.generate(page)
+            val pdf  = PDF.generate(page)
+            val path = Util.savePDF(conf.pdfPath, pdf)
+            val ed   = EmailData(conf, user.email, path)
+            Mailer.sendPDF(ed)
             Ok(pdf).withContentType(Some(`Content-Type`(`application/pdf`)))
         }
       }
