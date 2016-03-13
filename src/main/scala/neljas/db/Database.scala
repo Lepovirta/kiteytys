@@ -5,11 +5,12 @@ import java.sql.Connection
 import com.typesafe.scalalogging.LazyLogging
 import com.zaxxer.hikari.{HikariDataSource, HikariConfig}
 import doobie.imports.{Capture, Transactor}
+import neljas.conf.Conf
 
 import scalaz.concurrent.Task
 import scalaz.{Nondeterminism, Catchable, Monad}
 
-final class Database(conf: neljas.conf.Database) extends LazyLogging {
+final class Database(conf: Conf.Database) extends LazyLogging {
   val hikariConfig = {
     val config = new HikariConfig()
     config.setDriverClassName(conf.driver)

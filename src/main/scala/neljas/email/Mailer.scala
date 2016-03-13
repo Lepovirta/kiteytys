@@ -1,35 +1,53 @@
 package neljas.email
 
-import org.apache.commons.mail._
+import javax.mail.util.ByteArrayDataSource
 
-import neljas.EmailData
+import com.typesafe.scalalogging.LazyLogging
+import neljas.User
+import neljas.conf.Conf
+import org.apache.commons.mail.{EmailException, EmailAttachment, DefaultAuthenticator, MultiPartEmail}
 
-object Mailer {
+import scalaz.concurrent.Task
+
+final class Mailer(conf: Conf.Smtp) extends LazyLogging {
 
   val message = "Hello!"
   val subject = "Subj"
 
-  val attName = "attachment"
-  val attDesc = "description"
+  val attachmentName = "attachment.pdf"
+  val attachmentDescription = "PDF"
+  val attachmentMime = "application/pdf"
 
-  def sendPDF(ed: EmailData): Unit = {
-    val attachment = new EmailAttachment()
-    attachment.setPath(ed.filePath)
-    attachment.setDisposition(EmailAttachment.ATTACHMENT)
-    attachment.setDescription(attDesc)
-    attachment.setName(attName)
+  def sendPDF(recipient: User, data: Array[Byte]): Task[String] = {
+    val email = dataToEmail(recipient, data)
+    try {
+      val result = email.send()
+      logger.info(s"Sent email to ${recipient.email}. Message ID: $result")
+      Task.now(result)
+    } catch {
+      case ex: EmailException => Task.fail(ex)
+      case ex: IllegalStateException => Task.fail(ex)
+    }
+  }
 
+  private def dataToEmail(recipient: User, data: Array[Byte]) = {
     val email = new MultiPartEmail()
-    email.setHostName(ed.host)
-    email.setSmtpPort(ed.port)
-    email.setAuthenticator(new DefaultAuthenticator(ed.user, ed.password))
+
+    email.setHostName(conf.host)
+    email.setSmtpPort(conf.port)
+    email.setAuthenticator(new DefaultAuthenticator(conf.user, conf.password))
     email.setSSLOnConnect(true)
-    email.addTo(ed.to, ed.toName)
-    email.setFrom(ed.from, ed.fromName)
+    email.addTo(recipient.email, recipient.name)
+    email.setFrom(conf.from, conf.fromName)
     email.setSubject(subject)
     email.setMsg(message)
 
-    email.attach(attachment)
-    email.send()
+    email.attach(
+      new ByteArrayDataSource(data, attachmentMime),
+      attachmentName,
+      attachmentDescription,
+      EmailAttachment.ATTACHMENT)
+
+    email
   }
 }

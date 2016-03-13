@@ -48,15 +48,3 @@ object Message {
 }
 
 final case class Message(title: String, content: String)
-
-final case class EmailData(conf: Settings, toAddr: String, path: String) {
-  val host = conf.smtpHost
-  val port = conf.smtpPort
-  val user = conf.smtpUser
-  val password = conf.smtpPassword
-  val to = toAddr
-  val toName = to
-  val from = conf.smtpFrom
-  val fromName = conf.smtpFromName
-  val filePath = path
-}

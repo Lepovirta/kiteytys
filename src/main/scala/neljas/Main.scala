@@ -2,6 +2,8 @@ package neljas
 
 import com.typesafe.scalalogging.LazyLogging
 import neljas.conf.Conf
+import neljas.email.Mailer
+import neljas.pdf.PDF
 import org.http4s.server.blaze.BlazeBuilder
 
 object Main extends App with LazyLogging {
@@ -12,14 +14,16 @@ object Main extends App with LazyLogging {
   // Setup components
   val conf = Conf.load(Main.args(0))
   val database = new db.Database(conf.database)
-  val http = BlazeBuilder
-    .bindHttp(conf.port)
-    .mountService(new Http(conf, database.repos).service, "/")
+  val mailer = new Mailer(conf.smtp)
+  val pdf = new PDF(conf.pdf)
+  val http = new Http(database.repos, mailer, pdf)
 
   private def startHttp(): Unit = {
-    logger.info("Starting server in port: {}", conf.port.toString)
+    logger.info("Starting server in port: {}", conf.http.port.toString)
 
-    http
+    BlazeBuilder
+      .bindHttp(conf.http.port)
+      .mountService(http.service, "/")
       .run
       .onShutdown(shutdownHook())
       .awaitShutdown()
