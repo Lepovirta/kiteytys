@@ -38,7 +38,13 @@ object Dependencies {
     val all = List(typesafeConfig)
   }
 
-  val all = List.concat(http4s.all, log.all, pdf.all, conf.all)
+  object email {
+    val commonsMail = "org.apache.commons" % "commons-email" % "1.4"
+
+    val all = List(commonsMail)
+  }
+
+  val all = List.concat(http4s.all, log.all, pdf.all, conf.all, email.all)
 }
 
 object Warts {
