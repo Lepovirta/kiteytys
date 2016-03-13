@@ -21,6 +21,7 @@ final case class Settings(conf: Config) {
   val smtpHost     = smtpConf.getString("host")
   val smtpPort     = smtpConf.getInt("port")
   val smtpFrom     = smtpConf.getString("from")
+  val smtpFromName = smtpConf.getString("fromName")
   val smtpUser     = smtpConf.getString("user")
   val smtpPassword = smtpConf.getString("passwd")
 }
