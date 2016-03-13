@@ -14,9 +14,12 @@ object Dependencies {
     val doobieVersion = "0.2.3"
     List(
       "org.tpolecat" %% "doobie-core" % doobieVersion,
+      "org.tpolecat" %% "doobie-contrib-postgresql" % doobieVersion,
       "org.tpolecat" %% "doobie-contrib-h2" % doobieVersion,
+      "org.postgresql" % "postgresql" % "9.4.1208",
       "com.h2database" % "h2" % "1.4.191",
-      "com.zaxxer" % "HikariCP" % "2.4.3"
+      "com.zaxxer" % "HikariCP" % "2.4.3",
+      "org.flywaydb" % "flyway-core" % "4.0"
     )
   }
 
