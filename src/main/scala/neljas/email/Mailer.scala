@@ -26,7 +26,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
     |innolla,
     |gällit
     |
-    |Play. Focus. Do. Repeat"""
+    |Play. Focus. Do. Repeat""".stripMargin
 
   val attachmentName = "Kiteyttaja.pdf"
   val attachmentDescription = "PDF"
@@ -50,7 +50,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
     email.setHostName(conf.host)
     email.setSmtpPort(conf.port)
     email.setAuthenticator(new DefaultAuthenticator(conf.user, conf.password))
-    email.setSSLOnConnect(true)
+    email.setSSLOnConnect(conf.ssl)
     email.addTo(recipient, recipient)
     email.setFrom(conf.from, conf.fromName)
     email.setSubject(subject)

@@ -20,9 +20,9 @@
     <div class="flow">
       <div class="row">
         <label for="identifier">Pelitunniste</label>
-        <input class="required" type="text" name="game[identifier]" id="identifier" autofocus="autofocus" />
+        <input class="required" type="text" name="identifier" id="identifier" autofocus="autofocus" />
         <label for="email">Sähköposti</label>
-        <input class="email" type="email" name="game[email]" id="email" />
+        <input class="email" type="email" name="email" id="email" />
       </div>
     </div>
 
@@ -33,11 +33,11 @@
       <div class="row">
         <div class="col">
           <label for="strongCard">Vahvin</label>
-          <input type="text" name="game[strongCard]" id="strongCard" />
+          <input type="text" name="strongCard" id="strongCard" class="required" />
         </div>
         <div class="col">
           <label for="strong-num">Arvosana</label>
-          <input id="strong-num" type="number" name="game[strongNum]" min="1" max="4" />
+          <input id="strong-num" type="number" name="strongNum" min="1" max="4" class="required" />
         </div>
       </div>
     </div>
@@ -46,11 +46,11 @@
       <div class="row">
         <div class="col">
           <label for="weakCard">Heikoin</label>
-          <input type="text" name="game[weakCard]" id="weakCard" />
+          <input type="text" name="weakCard" id="weakCard" class="required" />
         </div>
         <div class="col">
           <label for="weak-num">Arvosana</label>
-          <input id="weak-num" type="number" name="game[weakNum]" min="1" max="4" />
+          <input id="weak-num" type="number" name="weakNum" min="1" max="4" class="required" />
         </div>
       </div>
     </div>
@@ -59,11 +59,11 @@
       <div class="row">
         <div class="col">
           <label for="importantCard">Tärkein</label>
-          <input type="text" name="game[importantCard]" id="importantCard" />
+          <input type="text" name="importantCard" id="importantCard" class="required" />
         </div>
         <div class="col">
           <label for="important-num">Arvosana</label>
-          <input id="important-num" type="number" name="game[importantNum]" min="1" max="4" />
+          <input id="important-num" type="number" name="importantNum" min="1" max="4" class="required" />
         </div>
       </div>
     </div>
@@ -72,11 +72,11 @@
       <div class="row">
         <div class="col">
           <label for="hardCard">Vaikein</label>
-          <input type="text" name="game[hardCard]" id="hardCard" />
+          <input type="text" name="hardCard" id="hardCard" class="required" />
         </div>
         <div class="col">
           <label for="hard-num">Arvosana</label>
-          <input id="hard-num" type="number" name=game[hardNum]" min="1" max="4" />
+          <input id="hard-num" type="number" name="hardNum" min="1" max="4" class="required" />
         </div>
       </div>
     </div>
@@ -85,11 +85,11 @@
       <div class="row">
         <div class="col">
           <label for="tediousCard">Ikävin</label>
-          <input type="text" name="game[tediousCard]" id="tediousCard" />
+          <input type="text" name="tediousCard" id="tediousCard" class="required" />
         </div>
         <div class="col">
           <label for="tedious-num">Arvosana</label>
-          <input id="tedious-num" type="number" name=game[tediousNum]" min="1" max="4" />
+          <input id="tedious-num" type="number" name="tediousNum" min="1" max="4" class="required" />
         </div>
       </div>
     </div>
@@ -98,11 +98,11 @@
       <div class="row">
         <div class="col">
           <label for="inspiringCard">Innostavin</label>
-          <input type="text" name="game[inspiringCard]" id="inspiringCard" />
+          <input type="text" name="inspiringCard" id="inspiringCard" class="required" />
         </div>
         <div class="col">
           <label for="inspiring-num">Arvosana</label>
-          <input id="inspiring-num" type="number" name="game[inspiringNum]" min="1" max="4" />
+          <input id="inspiring-num" type="number" name="inspiringNum" min="1" max="4" class="required" />
         </div>
       </div>
     </div>
@@ -110,15 +110,15 @@
     <div class="flow">
       <div class="row">
         <label for="topaasia">Topaasia</label>
-        <input type="text" name="game[topaasia]" id="topaasia" />
+        <input type="text" name="topaasia" id="topaasia" class="required" />
       </div>
       <div class="row">
         <label for="openQuestion">Miksi tämä on meidän mielestämme tärkein (Topaasia)?</label>
-        <textarea id="openQuestion" name="game[openQuestion]"></textarea>
+        <textarea id="openQuestion" name="openQuestion" class="required"></textarea>
       </div>
       <div class="row">
         <label for="rating">Käytettyyn aikaan nähden saatu hyöty</label>
-        <input type="number" min="1" max="5" name="game[rating]" id="rating" />
+        <input type="number" min="1" max="5" name="rating" id="rating" class="required" />
       </div>
     </div>
     <button type="submit">Lähetä lomake</button>
