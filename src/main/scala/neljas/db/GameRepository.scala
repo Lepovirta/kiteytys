@@ -3,7 +3,6 @@ package neljas.db
 import doobie.imports._
 import neljas.Game
 import scalaz.concurrent.Task
-import scalaz.stream.Process
 
 class GameRepository(xa: Transactor[Task]) extends Repository {
 
@@ -38,10 +37,10 @@ class GameRepository(xa: Transactor[Task]) extends Repository {
         importantCard, importantNum, hardCard, hardNum, tediousCard,
         tediousNum, inspiringCard, inspiringNum, topaasia, openQuestion, rating
       ) VALUES (
-        ${g.identifier}, ${g.email}, ${g.strongCard}, ${g.strongNum},
-        ${g.weakCard}, ${g.weakNum}, ${g.importantCard}, ${g.importantNum},
-        ${g.hardCard}, ${g.hardNum}, ${g.tediousCard}, ${g.tediousNum},
-        ${g.inspiringCard}, ${g.inspiringNum}, ${g.topaasia},
+        ${g.identifier}, ${g.email}, ${g.strong.name}, ${g.strong.grade},
+        ${g.weak.name}, ${g.weak.grade}, ${g.important.name}, ${g.important.grade},
+        ${g.hard.name}, ${g.hard.grade}, ${g.tedious.name}, ${g.tedious.grade},
+        ${g.inspiring.name}, ${g.inspiring.grade}, ${g.topaasia},
         ${g.openQuestion}, ${g.rating}
       )
     """.update
