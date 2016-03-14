@@ -27,7 +27,7 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
     case GET -> Root =>
       Ok(html.index())
 
-    case req @ POST -> Root / "submit" =>
+    case req @ POST -> Root =>
       req.decode[UrlForm] { form =>
         val result = for {
           game <- gameDataFromForm(form)
