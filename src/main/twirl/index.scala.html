@@ -25,9 +25,9 @@
     <div class="flow">
       <div class="row">
         <label for="owner">Pelitunniste</label>
-        <input class="required" type="text" name="owner" id="owner" autofocus="autofocus" />
+        <input class="required" type="text" name="owner" id="owner" value="@form.getFirstOrElse("owner", "")" autofocus="autofocus" />
         <label for="email">Sähköposti</label>
-        <input class="email" type="email" name="email" id="email" />
+        <input class="email" type="email" name="email" id="email" value="@form.getFirstOrElse("email", "")" />
       </div>
     </div>
 
@@ -38,11 +38,11 @@
       <div class="row">
         <div class="col">
           <label for="strongCard">Vahvin</label>
-          <input type="text" name="strongCard" id="strongCard" class="required" />
+          <input type="text" name="strongCard" id="strongCard" class="required" value="@form.getFirstOrElse("strongCard", "")" />
         </div>
         <div class="col">
           <label for="strong-num">Arvosana (1-4, 4 = paras)</label>
-          <input id="strong-num" type="number" name="strongNum" min="1" max="4" class="required" />
+          <input id="strong-num" type="number" name="strongNum" min="1" max="4" class="required" value="@form.getFirstOrElse("strongNum", "")" />
         </div>
       </div>
     </div>
@@ -51,11 +51,11 @@
       <div class="row">
         <div class="col">
           <label for="weakCard">Heikoin</label>
-          <input type="text" name="weakCard" id="weakCard" class="required" />
+          <input type="text" name="weakCard" id="weakCard" class="required" value="@form.getFirstOrElse("weakCard", "")" />
         </div>
         <div class="col">
           <label for="weak-num">Arvosana (1-4)</label>
-          <input id="weak-num" type="number" name="weakNum" min="1" max="4" class="required" />
+          <input id="weak-num" type="number" name="weakNum" min="1" max="4" class="required" value="@form.getFirstOrElse("weakNum", "")" />
         </div>
       </div>
     </div>
@@ -64,11 +64,11 @@
       <div class="row">
         <div class="col">
           <label for="importantCard">Tärkein</label>
-          <input type="text" name="importantCard" id="importantCard" class="required" />
+          <input type="text" name="importantCard" id="importantCard" class="required" value="@form.getFirstOrElse("importantCard", "")" />
         </div>
         <div class="col">
           <label for="important-num">Arvosana (1-4)</label>
-          <input id="important-num" type="number" name="importantNum" min="1" max="4" class="required" />
+          <input id="important-num" type="number" name="importantNum" min="1" max="4" class="required" value="@form.getFirstOrElse("importantNum", "")" />
         </div>
       </div>
     </div>
@@ -77,11 +77,11 @@
       <div class="row">
         <div class="col">
           <label for="hardCard">Vaikein</label>
-          <input type="text" name="hardCard" id="hardCard" class="required" />
+          <input type="text" name="hardCard" id="hardCard" class="required" value="@form.getFirstOrElse("hardCard", "")" />
         </div>
         <div class="col">
           <label for="hard-num">Arvosana (1-4)</label>
-          <input id="hard-num" type="number" name="hardNum" min="1" max="4" class="required" />
+          <input id="hard-num" type="number" name="hardNum" min="1" max="4" class="required" value="@form.getFirstOrElse("hardNum", "")" />
         </div>
       </div>
     </div>
@@ -90,11 +90,11 @@
       <div class="row">
         <div class="col">
           <label for="tediousCard">Ikävin</label>
-          <input type="text" name="tediousCard" id="tediousCard" class="required" />
+          <input type="text" name="tediousCard" id="tediousCard" class="required" value="@form.getFirstOrElse("tediousCard", "")" />
         </div>
         <div class="col">
           <label for="tedious-num">Arvosana (1-4)</label>
-          <input id="tedious-num" type="number" name="tediousNum" min="1" max="4" class="required" />
+          <input id="tedious-num" type="number" name="tediousNum" min="1" max="4" class="required" value="@form.getFirstOrElse("tediousNum", "")" />
         </div>
       </div>
     </div>
@@ -103,11 +103,11 @@
       <div class="row">
         <div class="col">
           <label for="inspiringCard">Innostavin</label>
-          <input type="text" name="inspiringCard" id="inspiringCard" class="required" />
+          <input type="text" name="inspiringCard" id="inspiringCard" class="required" value="@form.getFirstOrElse("inspiringCard", "")" />
         </div>
         <div class="col">
           <label for="inspiring-num">Arvosana (1-4)</label>
-          <input id="inspiring-num" type="number" name="inspiringNum" min="1" max="4" class="required" />
+          <input id="inspiring-num" type="number" name="inspiringNum" min="1" max="4" class="required" value="@form.getFirstOrElse("inspiringNum", "")" />
         </div>
       </div>
     </div>
@@ -115,15 +115,15 @@
     <div class="flow">
       <div class="row">
         <label for="topaasia">Topaasia</label>
-        <input type="text" name="topaasia" id="topaasia" class="required" />
+        <input type="text" name="topaasia" id="topaasia" class="required" value="@form.getFirstOrElse("topaasia", "")" />
       </div>
       <div class="row">
         <label for="openQuestion">Miksi tämä on meidän mielestämme tärkein (Topaasia)?</label>
-        <textarea id="openQuestion" name="openQuestion" class="required"></textarea>
+        <textarea id="openQuestion" name="openQuestion" class="required">@form.getFirstOrElse("openQuestion", "")</textarea>
       </div>
       <div class="row">
         <label for="rating">Käytettyyn aikaan nähden saatu hyöty (1-5, 5 = hyödyllisin)</label>
-        <input type="number" min="1" max="5" name="rating" id="rating" class="required" />
+        <input type="number" min="1" max="5" name="rating" id="rating" class="required" value="@form.getFirstOrElse("rating", "")" />
       </div>
     </div>
     <button type="submit">Lähetä lomake</button>
