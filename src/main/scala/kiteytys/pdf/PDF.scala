@@ -16,7 +16,6 @@ final class PDF(conf: Conf.Pdf) extends LazyLogging {
   implicit val pdfThreadPool = Executors.newFixedThreadPool(2)
 
   val pdf = Pdf(new PdfConfig {
-    userStyleSheet := "static/pdf.css"
     marginTop := "0mm"
     marginBottom := "0mm"
     marginLeft := "0mm"
