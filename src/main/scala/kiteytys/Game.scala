@@ -33,7 +33,7 @@ object Game {
 
   def fromForm(form: UrlForm): Either[String, Game] =
     for {
-      owner <- stringField(form, "identifier").right
+      owner <- stringField(form, "owner").right
       email <- stringField(form, "email").right
       strong <- cardFromForm(form, "strong").right
       weak <- cardFromForm(form, "weak").right
@@ -43,7 +43,7 @@ object Game {
       inspiring <- cardFromForm(form, "inspiring").right
       topaasia <- stringField(form, "topaasia").right
       openQuestion <- stringField(form, "openQuestion").right
-      rating <- intField(form, "rating", min = 1, max = 4).right
+      rating <- intField(form, "rating", min = 1, max = 5).right
     } yield Game(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, openQuestion, rating)
 
   private def cardFromForm(form: UrlForm, level: String) = for {
