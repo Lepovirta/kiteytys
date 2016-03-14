@@ -1,4 +1,4 @@
-# Kiteytys (Crystallize)
+# Kiteytys ("crystallize")
 
 ## Development
 Dependencies:
@@ -18,3 +18,4 @@ sbt "run user.conf"
 Dependencies:
 - JRE
 - PostgreSQL
+- wkhtmltopdf
