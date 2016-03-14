@@ -50,7 +50,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
 
   def sendGame(game: Game): Task[String] = {
     val email = new SimpleEmail()
-    val recipient = conf.admin
+    val recipient = conf.adminEmail
 
     val subject = "Uusi peli Kiteyttäjässä"
     val message = s"""Pelin tiedot:

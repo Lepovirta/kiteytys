@@ -11,14 +11,14 @@ object Conf {
   }
 
   final case class Smtp(conf: Config) {
-    val host     = conf.getString("host")
-    val port     = conf.getInt("port")
-    val from     = conf.getString("from")
-    val fromName = conf.getString("fromName")
-    val user     = conf.getString("username")
-    val password = conf.getString("password")
-    val ssl      = conf.getBoolean("ssl")
-    val admin    = conf.getString("admin")
+    val host       = conf.getString("host")
+    val port       = conf.getInt("port")
+    val from       = conf.getString("from")
+    val fromName   = conf.getString("fromName")
+    val user       = conf.getString("username")
+    val password   = conf.getString("password")
+    val ssl        = conf.getBoolean("ssl")
+    val adminEmail = conf.getString("adminEmail")
   }
 
   final case class Database(conf: Config) {
