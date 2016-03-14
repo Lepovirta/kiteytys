@@ -29,8 +29,7 @@ object Dependencies {
     List(
       "org.http4s" %% "http4s-dsl" % version,
       "org.http4s" %% "http4s-twirl" % version,
-      "org.http4s" %% "http4s-blaze-server" % version,
-      "org.http4s" %% "http4s-argonaut" % version
+      "org.http4s" %% "http4s-blaze-server" % version
     )
   }
 
@@ -45,10 +44,5 @@ object Dependencies {
 
   val conf = List("com.typesafe" % "config" % "1.3.0")
 
-  val json = {
-    val argonautVersion = "6.1"
-    List("io.argonaut" %% "argonaut" % argonautVersion)
-  }
-
-  val all = List.concat(db, http4s, logging, pdf, email, conf, json)
+  val all = List.concat(db, http4s, logging, pdf, email, conf)
 }
