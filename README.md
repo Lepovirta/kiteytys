@@ -1,4 +1,4 @@
-# Kiteytys
+# Kiteytys (Crystallize)
 
 ## Development
 Dependencies:
