@@ -7,6 +7,12 @@ Dependencies:
 - JDK
 - local STMP server ([example](https://djfarrelly.github.io/MailDev/))
 - PostgreSQL
+- wkhtmltopdf
+
+Running:
+```
+sbt "run user.conf"
+```
 
 ## Production
 Dependencies:
