@@ -1,9 +1,9 @@
-package neljas
+package kiteytys
 
 import com.typesafe.scalalogging.LazyLogging
-import neljas.db.Repositories
-import neljas.email.Mailer
-import neljas.pdf.PDF
+import kiteytys.db.Repositories
+import kiteytys.email.Mailer
+import kiteytys.pdf.PDF
 import org.http4s.MediaType._
 import org.http4s._
 import org.http4s.dsl._

@@ -1,9 +1,9 @@
-package neljas
+package kiteytys
 
 import com.typesafe.scalalogging.LazyLogging
-import neljas.conf.Conf
-import neljas.email.Mailer
-import neljas.pdf.PDF
+import kiteytys.conf.Conf
+import kiteytys.email.Mailer
+import kiteytys.pdf.PDF
 import org.http4s.server.blaze.BlazeBuilder
 
 object Main extends App with LazyLogging {

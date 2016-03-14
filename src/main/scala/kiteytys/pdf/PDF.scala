@@ -1,4 +1,4 @@
-package neljas.pdf
+package kiteytys.pdf
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -7,7 +7,7 @@ import com.typesafe.scalalogging.LazyLogging
 import io.github.cloudify.scala.spdf._
 import java.io._
 import java.util.concurrent.Executors
-import neljas.conf.Conf
+import kiteytys.conf.Conf
 
 import scalaz.concurrent.Task
 

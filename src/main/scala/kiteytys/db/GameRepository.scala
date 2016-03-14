@@ -1,7 +1,7 @@
-package neljas.db
+package kiteytys.db
 
 import doobie.imports._
-import neljas.Game
+import kiteytys.Game
 import scalaz.concurrent.Task
 
 class GameRepository(xa: Transactor[Task]) extends Repository {

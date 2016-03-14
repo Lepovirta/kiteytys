@@ -1,9 +1,9 @@
-package neljas.email
+package kiteytys.email
 
 import javax.mail.util.ByteArrayDataSource
 
 import com.typesafe.scalalogging.LazyLogging
-import neljas.conf.Conf
+import kiteytys.conf.Conf
 import org.apache.commons.mail.{EmailException, EmailAttachment, DefaultAuthenticator, MultiPartEmail}
 
 import scalaz.concurrent.Task

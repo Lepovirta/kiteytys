@@ -1,4 +1,4 @@
-package neljas.conf
+package kiteytys.conf
 
 import com.typesafe.config._
 import java.io.File

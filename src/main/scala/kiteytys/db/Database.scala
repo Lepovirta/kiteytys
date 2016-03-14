@@ -1,11 +1,11 @@
-package neljas.db
+package kiteytys.db
 
 import java.sql.Connection
 
 import com.typesafe.scalalogging.LazyLogging
 import com.zaxxer.hikari.{HikariDataSource, HikariConfig}
 import doobie.imports.{Capture, Transactor}
-import neljas.conf.Conf
+import kiteytys.conf.Conf
 import org.flywaydb.core.Flyway
 
 import scalaz.concurrent.Task
