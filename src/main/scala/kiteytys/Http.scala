@@ -34,6 +34,7 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
           bytes <- pdf.generate(html.pdf.render(game).toString)
           _ <- pdf.save(bytes)
           _ <- mailer.sendPDF(game.email, bytes)
+          _ <- mailer.sendGame(game)
         } yield bytes
 
         result.attempt.flatMap {
