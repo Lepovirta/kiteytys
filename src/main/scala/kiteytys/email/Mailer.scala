@@ -52,8 +52,24 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
     val email = new SimpleEmail()
     val recipient = conf.admin
 
-    val subject = "Uusi peli kiteyttäjässä"
-    val message = "TODO: content"
+    val subject = "Uusi peli Kiteyttäjässä"
+    val message = s"""Pelin tiedot:
+      |
+      | Pelitunniste: ${game.owner}
+      | Sähköposti: ${game.email}
+      |
+      | Vahvin: ${game.strong.name} (${game.strong.grade})
+      | Heikoin: ${game.weak.name} (${game.weak.grade})
+      | Tärkein: ${game.important.name} (${game.important.grade})
+      | Vaikein: ${game.hard.name} (${game.hard.grade})
+      | Ikävin: ${game.tedious.name} (${game.tedious.grade})
+      | Innostavin: ${game.inspiring.name} (${game.inspiring.grade})
+      |
+      | Topaasia: ${game.topaasia}
+      | Perustelu: ${game.openQuestion}
+      |
+      | Hyöty: ${game.rating}
+      |""".stripMargin
 
     setup(email, recipient, subject, message)
 
