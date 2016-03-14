@@ -21,6 +21,6 @@ class GameRepository(xa: Transactor[Task]) extends Repository {
       )
     """.update
 
-  def create(message: Game): Task[Long] =
-    sqlCreate(message).withUniqueGeneratedKeys[Long]("id").transact(xa)
+  def create(game: Game): Task[Long] =
+    sqlCreate(game).withUniqueGeneratedKeys[Long]("id").transact(xa)
 }

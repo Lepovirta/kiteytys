@@ -49,7 +49,7 @@ object Game {
   private def cardFromForm(form: UrlForm, level: String) = for {
     card <- cardName(form, s"${level}Card").right
     grade <- intField(form, s"${level}Num", min = 1, max = 4).right
-  } yield Card(card, grade)
+  } yield CardGrade(card, grade)
 
   private def cardName(form: UrlForm, field: String) =
     stringField(form, field)
@@ -67,15 +67,15 @@ object Game {
 final case class Game(
   owner: String,
   email: String,
-  strong: Card,
-  weak: Card,
-  important: Card,
-  hard: Card,
-  tedious: Card,
-  inspiring: Card,
+  strong: CardGrade,
+  weak: CardGrade,
+  important: CardGrade,
+  hard: CardGrade,
+  tedious: CardGrade,
+  inspiring: CardGrade,
   topaasia: String,
   openQuestion: String,
   rating: Int
 )
 
-final case class Card(name: String, grade: Int)
+final case class CardGrade(name: String, grade: Int)
