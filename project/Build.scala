@@ -1,12 +1,27 @@
+import play.twirl.sbt.SbtTwirl
+import sbt.Keys._
 import sbt._
+import sbtassembly.AssemblyPlugin.autoImport._
 
-object Build {
-}
+object Build extends Build {
+  val projectName = "kiteytys"
+  val projectVersion = "0.1-SNAPSHOT"
 
-object Resolvers {
-  val http4s = "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
+  val customResolvers = List(
+    "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
+  )
 
-  val all = List(http4s)
+  lazy val root = project
+    .in(file("."))
+    .enablePlugins(SbtTwirl)
+    .settings(
+      name := projectName,
+      version := projectVersion,
+      scalaVersion := "2.11.8",
+      resolvers ++= Build.customResolvers,
+      assemblyJarName in assembly := projectName + ".jar",
+      libraryDependencies ++= Dependencies.all
+    )
 }
 
 object Dependencies {
