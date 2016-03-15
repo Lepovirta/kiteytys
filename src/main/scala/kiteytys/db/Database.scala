@@ -54,12 +54,6 @@ final class Repositories(xa: Transactor[Task]) {
 trait DoobieImplicits {
   implicit val LocalTimeMeta: Meta[LocalDateTime] =
     Meta[Timestamp].xmap(_.toLocalDateTime, Timestamp.valueOf)
-
-  implicit val CardGradeComposite: Composite[CardGradeInput] =
-    Composite[(Card.Code, Int)].xmap(
-      (t: (Card.Code, Int)) => CardGradeInput(t._1, t._2),
-      (c: CardGradeInput) => (c.code, c.grade)
-    )
 }
 
 trait Repository {

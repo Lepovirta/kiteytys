@@ -3,23 +3,23 @@ package kiteytys
 import java.time.LocalDateTime
 
 import org.http4s.UrlForm
-import scala.util.Try
 
 object Game {
   import FormParsing._
 
   def fromForm(form: UrlForm): Either[String, GameInput] = {
     import CardGradeInput.{fromForm => cardFromForm}
+    import CardLevel._
 
     for {
       owner <- stringField(form, "owner").right
       email <- stringField(form, "email").right
-      strong <- cardFromForm(form, "strong").right
-      weak <- cardFromForm(form, "weak").right
-      important <- cardFromForm(form, "important").right
-      hard <- cardFromForm(form, "hard").right
-      tedious <- cardFromForm(form, "tedious").right
-      inspiring <- cardFromForm(form, "inspiring").right
+      strong <- cardFromForm(form, Strong).right
+      weak <- cardFromForm(form, Weak).right
+      important <- cardFromForm(form, Important).right
+      hard <- cardFromForm(form, Hard).right
+      tedious <- cardFromForm(form, Tedious).right
+      inspiring <- cardFromForm(form, Inspiring).right
       topaasia <- stringField(form, "topaasia").right
       openQuestion <- stringField(form, "openQuestion").right
       rating <- intField(form, "rating", min = 1, max = 5).right
@@ -73,5 +73,7 @@ final case class Game(
   topaasia: Card,
   topaasiaAnswer: String,
   rating: Int,
-  createdAt: LocalDateTime
-)
+  createdAt: LocalDateTime) {
+
+  val cardGrades = List(strong, weak, important, hard, tedious, inspiring).sorted
+}
