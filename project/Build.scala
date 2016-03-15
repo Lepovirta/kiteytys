@@ -3,7 +3,7 @@ import sbt._
 object Build {
 }
 
-object Resolvers {
+object CustomResolvers {
   val http4s = "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
   val all = List(http4s)
