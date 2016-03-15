@@ -19,8 +19,9 @@ final class GameCreator(repos: Repositories, mailer: Mailer, pdf: PDF) extends L
     */
   def create(gameInput: GameInput): Task[Array[Byte]] = for {
     time <- currentTime
+    owner <- repos.owner.fetchById(gameInput.owner)
     cards <- fetchCards(gameInput)
-    game = Game.fromInput(gameInput, time, cards)
+    game = Game.fromInput(gameInput, owner, time, cards)
     bytes <- generatePdf(game)
     _ <- repos.game.create(gameInput, time)
     _ <- pdf.save(bytes)

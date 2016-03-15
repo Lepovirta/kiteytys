@@ -49,6 +49,7 @@ final class Database(conf: Conf.Database) extends LazyLogging {
 final class Repositories(xa: Transactor[Task]) {
   val game = new GameRepository(xa)
   val card = new CardRepository(xa)
+  val owner = new OwnerRepository(xa)
 }
 
 trait DoobieImplicits {

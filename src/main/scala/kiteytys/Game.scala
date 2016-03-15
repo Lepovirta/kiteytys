@@ -26,9 +26,9 @@ object Game {
     } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, openQuestion, rating)
   }
 
-  def fromInput(game: GameInput, createdAt: LocalDateTime, cards: Card.Collection): Game =
+  def fromInput(game: GameInput, owner: Owner, createdAt: LocalDateTime, cards: Card.Collection): Game =
     Game(
-      owner = game.owner,
+      owner = owner,
       email = game.email,
       strong = cards.graded(game.strong),
       weak = cards.graded(game.weak),
@@ -62,7 +62,7 @@ final case class GameInput(
 }
 
 final case class Game(
-  owner: String,
+  owner: Owner,
   email: String,
   strong: CardGrade,
   weak: CardGrade,
@@ -77,3 +77,5 @@ final case class Game(
 
   val cardGrades = List(strong, weak, important, hard, tedious, inspiring).sorted
 }
+
+final case class Owner(id: String, name: String)

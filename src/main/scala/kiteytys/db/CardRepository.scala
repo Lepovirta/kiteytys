@@ -14,7 +14,8 @@ object CardRepository extends DoobieImplicits {
   def sqlFetchByCodes(codes: NonEmptyList[Card.Code]): Query0[Card] = {
     implicit val codesParam = Param.many(codes)
     sql"""
-      SELECT code, subject, sentence FROM card
+      SELECT code, subject, sentence
+      FROM card
       WHERE code IN (${codes: codes.type})
     """.query[Card]
   }
