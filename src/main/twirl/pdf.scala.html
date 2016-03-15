@@ -90,31 +90,12 @@
     </div>
     <div class="flow">
         <h2>Päätetyt kortit</h2>
-        <h3>Vahvin</h3>
-        <p><span>@game.strong.subject</span> - @game.strong.sentence</p>
-        <p>@game.strong.grade</p>
 
-        <h3>Heikoin</h3>
-        <p><span>@game.weak.subject</span> - @game.weak.sentence</p>
-        <p>@game.weak.grade</p>
-
-        <h3>Tärkein</h3>
-        <p><span>@game.important.subject</span> - @game.important.sentence</p>
-        <p>@game.important.grade</p>
-
-        <h3>Vaikein</h3>
-        <p><span>@game.hard.subject</span> - @game.hard.sentence</p>
-        <p>@game.hard.grade</p>
-
-        <h3>Ikävin</h3>
-        <p><span>Subject</span> - sentence</p>
-        <p>3</p>
-        <p><span>@game.hard.subject</span> - @game.hard.sentence</p>
-        <p>@game.hard.grade</p>
-
-        <h3>Innostavin</h3>
-        <p><span>@game.inspiring.subject</span> - @game.inspiring.sentence</p>
-        <p>@game.inspiring.grade</p>
+        @for(card <- game.cardGrades) {
+        <h3>@card.level.text</h3>
+        <p><span>@card.subject</span> - @card.sentence</p>
+        <p>@card.grade</p>
+        }
     </div>
     <div class="flow">
         <h2>Topaasia</h2>
