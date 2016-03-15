@@ -16,7 +16,7 @@ import scalaz.{-\/, \/-}
 import scalaz.concurrent.Task
 
 
-final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
+final class Http(gameCreator: GameCreator)
   extends TwirlInstances with LazyLogging {
 
   private val static = cachedResource(Config("/static", "/static"))
@@ -29,15 +29,9 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
 
     case req @ POST -> Root / "submit" =>
       req.decode[UrlForm] { form =>
-        val result = for {
-          game <- gameDataFromForm(form)
-          bytes <- pdf.generate(html.pdf.render(game).toString)
-          _ <- pdf.save(bytes)
-          _ <- mailer.sendPDF(game.email, bytes)
-          _ <- mailer.sendGame(game)
-        } yield bytes
+        val pdfBytes = gameDataFromForm(form).flatMap(gameCreator.create)
 
-        result.attempt.flatMap {
+        pdfBytes.attempt.flatMap {
           case \/-(bytes) =>
             Ok(bytes).withContentType(Some(`Content-Type`(`application/pdf`)))
           case -\/(err) =>
@@ -53,7 +47,7 @@ final class Http(repos: Repositories, mailer: Mailer, pdf: PDF)
     "" -> rootService
   )
 
-  private def gameDataFromForm(form: UrlForm): Task[Game] =
+  private def gameDataFromForm(form: UrlForm): Task[GameInput] =
     Game.fromForm(form) match {
       case Left(errors) => Task.fail(new RuntimeException(errors))
       case Right(game) => Task.now(game)

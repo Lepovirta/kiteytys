@@ -3,9 +3,9 @@ package kiteytys.email
 import javax.mail.util.ByteArrayDataSource
 
 import com.typesafe.scalalogging.LazyLogging
-import kiteytys.conf.Conf
 import kiteytys.Game
-import org.apache.commons.mail.{EmailException, EmailAttachment, DefaultAuthenticator, MultiPartEmail, SimpleEmail, Email}
+import kiteytys.conf.Conf
+import org.apache.commons.mail.{DefaultAuthenticator, Email, EmailAttachment, EmailException, MultiPartEmail, SimpleEmail}
 
 import scalaz.concurrent.Task
 
@@ -58,12 +58,12 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
       | Pelitunniste: ${game.owner}
       | Sähköposti: ${game.email}
       |
-      | Vahvin: ${game.strong.name} (${game.strong.grade})
-      | Heikoin: ${game.weak.name} (${game.weak.grade})
-      | Tärkein: ${game.important.name} (${game.important.grade})
-      | Vaikein: ${game.hard.name} (${game.hard.grade})
-      | Ikävin: ${game.tedious.name} (${game.tedious.grade})
-      | Innostavin: ${game.inspiring.name} (${game.inspiring.grade})
+      | Vahvin: ${game.strong.render}
+      | Heikoin: ${game.weak.render}
+      | Tärkein: ${game.important.render}
+      | Vaikein: ${game.hard.render}
+      | Ikävin: ${game.tedious.render}
+      | Innostavin: ${game.inspiring.render}
       |
       | Topaasia: ${game.topaasia}
       | Perustelu: ${game.openQuestion}
