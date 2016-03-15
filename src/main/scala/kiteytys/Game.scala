@@ -49,26 +49,25 @@ object Game {
     } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, openQuestion, rating)
 
   def fromInput(game: GameInput, createdAt: LocalDateTime, cards: Card.Collection): Game = {
-    def card(ci: CardGradeInput): CardGrade = {
-      val c = cards.get(ci.code)
-      CardGrade(
-        code = ci.code,
-        subject = c.map(_.subject).getOrElse(ci.code),
-        sentence = c.map(_.sentence).getOrElse(ci.code),
-        grade = ci.grade)
+    def card(code: Card.Code): Card =
+      cards.getOrElse(code, Card(code, code, code))
+
+    def cardGrade(ci: CardGradeInput): CardGrade = {
+      val c = card(ci.code)
+      CardGrade(code = ci.code, subject = c.subject, sentence = c.sentence, grade = ci.grade)
     }
 
     Game(
       owner = game.owner,
       email = game.email,
-      strong = card(game.strong),
-      weak = card(game.weak),
-      important = card(game.important),
-      hard = card(game.hard),
-      tedious = card(game.tedious),
-      inspiring = card(game.inspiring),
-      topaasia = game.topaasia,
-      openQuestion = game.openQuestion,
+      strong = cardGrade(game.strong),
+      weak = cardGrade(game.weak),
+      important = cardGrade(game.important),
+      hard = cardGrade(game.hard),
+      tedious = cardGrade(game.tedious),
+      inspiring = cardGrade(game.inspiring),
+      topaasia = card(game.topaasia),
+      topaasiaAnswer = game.topaasiaAnswer,
       rating = game.rating,
       createdAt = createdAt
     )
@@ -102,10 +101,9 @@ final case class GameInput(
   hard: CardGradeInput,
   tedious: CardGradeInput,
   inspiring: CardGradeInput,
-  topaasia: String,
-  openQuestion: String,
-  rating: Int
-) {
+  topaasia: Card.Code,
+  topaasiaAnswer: String,
+  rating: Int) {
 
   val cardGrades = List(strong, weak, important, hard, tedious, inspiring)
 
@@ -123,8 +121,8 @@ final case class Game(
   hard: CardGrade,
   tedious: CardGrade,
   inspiring: CardGrade,
-  topaasia: String,
-  openQuestion: String,
+  topaasia: Card,
+  topaasiaAnswer: String,
   rating: Int,
   createdAt: LocalDateTime
 )

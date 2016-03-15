@@ -66,7 +66,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
       | Innostavin: ${game.inspiring.render}
       |
       | Topaasia: ${game.topaasia}
-      | Perustelu: ${game.openQuestion}
+      | Perustelu: ${game.topaasiaAnswer}
       |
       | Hyöty: ${game.rating}
       |""".stripMargin
