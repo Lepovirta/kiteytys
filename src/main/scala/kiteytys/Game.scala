@@ -1,6 +1,7 @@
 package kiteytys
 
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import org.http4s.UrlForm
 
@@ -58,7 +59,7 @@ final case class GameInput(
 
   val cardGrades = List(strong, weak, important, hard, tedious, inspiring)
 
-  val codes: Set[Card.Code] = cardGrades.map(_.code).toSet
+  val codes: Set[Card.Code] = (cardGrades.map(_.code) :+ topaasia).toSet
 }
 
 final case class Game(
@@ -76,6 +77,11 @@ final case class Game(
   createdAt: LocalDateTime) {
 
   val cardGrades = List(strong, weak, important, hard, tedious, inspiring).sorted
+
+  def renderDate: String = {
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    createdAt.format(formatter)
+  }
 }
 
 final case class Owner(id: String, name: String)
