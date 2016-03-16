@@ -11,6 +11,21 @@ object Build extends Build {
     "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
   )
 
+  val compilerOptions = List(
+    "-deprecation",
+    "-encoding", "UTF-8",
+    "-feature",
+    "-unchecked",
+    "-Xfatal-warnings",
+    "-Xlint",
+    "-Yno-adapted-args",
+    "-Ywarn-dead-code",
+    "-Ywarn-numeric-widen",
+    "-Ywarn-value-discard",
+    "-Xfuture",
+    "-language:higherKinds"
+  )
+
   lazy val root = project
     .in(file("."))
     .enablePlugins(SbtTwirl)
@@ -20,7 +35,8 @@ object Build extends Build {
       scalaVersion := "2.11.8",
       resolvers ++= Build.customResolvers,
       assemblyJarName in assembly := projectName + ".jar",
-      libraryDependencies ++= Dependencies.all
+      libraryDependencies ++= Dependencies.all,
+      scalacOptions ++= compilerOptions
     )
 }
 

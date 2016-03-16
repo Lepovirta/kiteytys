@@ -16,7 +16,8 @@ object Main extends App with LazyLogging {
   val database = new db.Database(conf.database)
   val mailer = new Mailer(conf.smtp)
   val pdf = new PDF(conf.pdf)
-  val http = new Http(database.repos, mailer, pdf)
+  val gameCreator = new GameCreator(database.repos, mailer, pdf)
+  val http = new Http(gameCreator)
 
   private def startHttp(): Unit = {
     logger.info("Starting server in port: {}", conf.http.port.toString)

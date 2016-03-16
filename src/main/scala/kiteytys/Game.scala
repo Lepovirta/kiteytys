@@ -1,71 +1,69 @@
 package kiteytys
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import org.http4s.UrlForm
-import scala.util.Try
-
-object FormParsing {
-  def stringToInt(s: String): Option[Int] = Try(s.toInt).toOption
-
-  def stringField(form: UrlForm, field: String): Either[String, String] =
-    form.getFirst(field).toRight(s"Missing field '$field'")
-
-  def intField(form: UrlForm, field: String,
-               min: Int = Int.MinValue, max: Int = Int.MaxValue): Either[String, Int] =
-    form.getFirst(field)
-      .flatMap(stringToInt)
-      .toRight(s"Invalid format for field '$field'")
-      .right.flatMap { i =>
-        if (i < min) Left(s"Number $i should be greater or equal than $min")
-        else Right(i)
-      }
-      .right.flatMap { i =>
-        if (i > max) Left(s"Number $i should be less or equal than $max")
-        else Right(i)
-      }
-}
 
 object Game {
   import FormParsing._
 
-  private val trailingNumber = "\\d+$".r
-  private val minCardNumber = 1
-  private val maxCardrNumber = 52
+  def fromForm(form: UrlForm): Either[Error, GameInput] = {
+    import CardGradeInput.{fromForm => cardFromForm}
+    import CardLevel._
 
-  def fromForm(form: UrlForm): Either[String, Game] =
     for {
       owner <- stringField(form, "owner").right
       email <- stringField(form, "email").right
-      strong <- cardFromForm(form, "strong").right
-      weak <- cardFromForm(form, "weak").right
-      important <- cardFromForm(form, "important").right
-      hard <- cardFromForm(form, "hard").right
-      tedious <- cardFromForm(form, "tedious").right
-      inspiring <- cardFromForm(form, "inspiring").right
+      strong <- cardFromForm(form, Strong).right
+      weak <- cardFromForm(form, Weak).right
+      important <- cardFromForm(form, Important).right
+      hard <- cardFromForm(form, Hard).right
+      tedious <- cardFromForm(form, Tedious).right
+      inspiring <- cardFromForm(form, Inspiring).right
       topaasia <- stringField(form, "topaasia").right
-      openQuestion <- stringField(form, "openQuestion").right
+      topaasiaAnswer <- stringField(form, "topaasiaAnswer").right
       rating <- intField(form, "rating", min = 1, max = 5).right
-    } yield Game(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, openQuestion, rating)
+    } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, topaasiaAnswer, rating)
+  }
 
-  private def cardFromForm(form: UrlForm, level: String) = for {
-    card <- cardName(form, s"${level}Card").right
-    grade <- intField(form, s"${level}Num", min = 1, max = 4).right
-  } yield CardGrade(card, grade)
+  def fromInput(game: GameInput, owner: Owner, createdAt: LocalDateTime, cards: Card.Collection): Game =
+    Game(
+      owner = owner,
+      email = game.email,
+      strong = cards.graded(game.strong),
+      weak = cards.graded(game.weak),
+      important = cards.graded(game.important),
+      hard = cards.graded(game.hard),
+      tedious = cards.graded(game.tedious),
+      inspiring = cards.graded(game.inspiring),
+      topaasia = cards(game.topaasia),
+      topaasiaAnswer = game.topaasiaAnswer,
+      rating = game.rating,
+      createdAt = createdAt
+    )
+}
 
-  private def cardName(form: UrlForm, field: String) =
-    stringField(form, field)
-      .right.map(_.toUpperCase)
-      .right.flatMap { s =>
-        trailingNumber
-          .findFirstIn(s)
-          .flatMap(stringToInt)
-          .filter(n => n >= minCardNumber && n <= maxCardrNumber)
-          .map(_ => s)
-          .toRight(s"Card name '$s' should end with a number between $minCardNumber-$maxCardrNumber.")
-      }
+final case class GameInput(
+  owner: String,
+  email: String,
+  strong: CardGradeInput,
+  weak: CardGradeInput,
+  important: CardGradeInput,
+  hard: CardGradeInput,
+  tedious: CardGradeInput,
+  inspiring: CardGradeInput,
+  topaasia: Card.Code,
+  topaasiaAnswer: String,
+  rating: Int) {
+
+  val cardGrades = List(strong, weak, important, hard, tedious, inspiring)
+
+  val codes: Set[Card.Code] = (cardGrades.map(_.code) :+ topaasia).toSet
 }
 
 final case class Game(
-  owner: String,
+  owner: Owner,
   email: String,
   strong: CardGrade,
   weak: CardGrade,
@@ -73,9 +71,17 @@ final case class Game(
   hard: CardGrade,
   tedious: CardGrade,
   inspiring: CardGrade,
-  topaasia: String,
-  openQuestion: String,
-  rating: Int
-)
+  topaasia: Card,
+  topaasiaAnswer: String,
+  rating: Int,
+  createdAt: LocalDateTime) {
 
-final case class CardGrade(name: String, grade: Int)
+  val cardGrades = List(strong, weak, important, hard, tedious, inspiring).sorted
+
+  def renderDate: String = {
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    createdAt.format(formatter)
+  }
+}
+
+final case class Owner(id: String, name: String)

@@ -1,15 +1,16 @@
 package kiteytys.db
 
-import java.sql.Connection
+import java.sql.{Connection, Timestamp}
+import java.time.LocalDateTime
 
 import com.typesafe.scalalogging.LazyLogging
-import com.zaxxer.hikari.{HikariDataSource, HikariConfig}
-import doobie.imports.{Capture, Transactor}
+import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
+import doobie.imports.{Capture, Meta, Transactor}
 import kiteytys.conf.Conf
 import org.flywaydb.core.Flyway
 
 import scalaz.concurrent.Task
-import scalaz.{Nondeterminism, Catchable, Monad}
+import scalaz.{Catchable, Monad}
 
 final class Database(conf: Conf.Database) extends LazyLogging {
   val hikariConfig = {
@@ -40,14 +41,20 @@ final class Database(conf: Conf.Database) extends LazyLogging {
 
   def init(): Unit = {
     logger.info("Initializing database")
-    flyway.migrate()
+    val result = flyway.migrate()
+    logger.info(s"Successfully applied $result migrations.")
   }
 }
 
 final class Repositories(xa: Transactor[Task]) {
   val game = new GameRepository(xa)
+  val card = new CardRepository(xa)
+  val owner = new OwnerRepository(xa)
+}
 
-  val all: List[Repository] = List(game)
+trait DoobieImplicits {
+  implicit val LocalTimeMeta: Meta[LocalDateTime] =
+    Meta[Timestamp].xmap(_.toLocalDateTime, Timestamp.valueOf)
 }
 
 trait Repository {
