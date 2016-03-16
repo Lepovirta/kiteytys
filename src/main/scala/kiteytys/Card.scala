@@ -29,7 +29,7 @@ object CardGradeInput {
 
   private val trailingNumber = "\\d+$".r
 
-  def fromForm(form: UrlForm, level: CardLevel) = for {
+  def fromForm(form: UrlForm, level: CardLevel): Either[Error, CardGradeInput] = for {
     card <- cardName(form, s"${level.stringId}Card").right
     grade <- intField(form, s"${level.stringId}Num", min = 1, max = 4).right
   } yield CardGradeInput(card, grade, level)
@@ -39,13 +39,13 @@ object CardGradeInput {
       .right.map(_.toUpperCase)
       .right.flatMap(filterCardNumber)
 
-  private def filterCardNumber(s: String): Either[String, String] =
+  private def filterCardNumber(s: String): Either[Error, String] =
     trailingNumber
       .findFirstIn(s)
       .flatMap(stringToInt)
       .filter(n => n >= Card.minCardNumber && n <= Card.maxCardNumber)
       .map(_ => s)
-      .toRight(s"Card name '$s' should end with a number between ${Card.minCardNumber}-${Card.maxCardNumber}.")
+      .toRight(InvalidFormat(s))
 }
 
 final case class CardGradeInput(code: Card.Code, grade: Int, level: CardLevel)

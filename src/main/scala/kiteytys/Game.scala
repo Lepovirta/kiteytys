@@ -7,7 +7,7 @@ import org.http4s.UrlForm
 object Game {
   import FormParsing._
 
-  def fromForm(form: UrlForm): Either[String, GameInput] = {
+  def fromForm(form: UrlForm): Either[Error, GameInput] = {
     import CardGradeInput.{fromForm => cardFromForm}
     import CardLevel._
 
@@ -21,9 +21,9 @@ object Game {
       tedious <- cardFromForm(form, Tedious).right
       inspiring <- cardFromForm(form, Inspiring).right
       topaasia <- stringField(form, "topaasia").right
-      openQuestion <- stringField(form, "openQuestion").right
+      topaasiaAnswer <- stringField(form, "topaasiaAnswer").right
       rating <- intField(form, "rating", min = 1, max = 5).right
-    } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, openQuestion, rating)
+    } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, topaasiaAnswer, rating)
   }
 
   def fromInput(game: GameInput, owner: Owner, createdAt: LocalDateTime, cards: Card.Collection): Game =

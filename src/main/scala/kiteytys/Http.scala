@@ -1,9 +1,7 @@
 package kiteytys
 
 import com.typesafe.scalalogging.LazyLogging
-import kiteytys.db.Repositories
-import kiteytys.email.Mailer
-import kiteytys.pdf.PDF
+import kiteytys.Errors.{FormParsingError, UserVisibleError}
 import org.http4s.MediaType._
 import org.http4s._
 import org.http4s.dsl._
@@ -12,8 +10,8 @@ import org.http4s.server.staticcontent.ResourceService.Config
 import org.http4s.server.{Router, staticcontent}
 import org.http4s.twirl.TwirlInstances
 
-import scalaz.{-\/, \/-}
 import scalaz.concurrent.Task
+import scalaz.{-\/, \/-}
 
 
 final class Http(gameCreator: GameCreator)
@@ -35,7 +33,8 @@ final class Http(gameCreator: GameCreator)
           case \/-(bytes) =>
             Ok(bytes).withContentType(Some(`Content-Type`(`application/pdf`)))
           case -\/(err) =>
-            BadRequest(html.index(form, Some(err.getMessage)))
+            logger.error("Error occurred while attempting to save a new game", err)
+            BadRequest(html.index(form, Some(getErrorMessage(err))))
         }
       }
 
@@ -47,9 +46,14 @@ final class Http(gameCreator: GameCreator)
     "" -> rootService
   )
 
+  private def getErrorMessage(t: Throwable): String = t match {
+    case ex: UserVisibleError => ex.userVisibleMessage
+    case _ => "Lomakkeen lähettäminen epäonnistui odottamattomasti."
+  }
+
   private def gameDataFromForm(form: UrlForm): Task[GameInput] =
     Game.fromForm(form) match {
-      case Left(errors) => Task.fail(new RuntimeException(errors))
+      case Left(errors) => Task.fail(new FormParsingError(errors, FormParsing.gameFieldToFinnish))
       case Right(game) => Task.now(game)
     }
 

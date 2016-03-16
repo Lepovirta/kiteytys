@@ -1,6 +1,7 @@
 package kiteytys.db
 
 import doobie.imports._
+import kiteytys.Errors.NoOwnerFound
 import kiteytys.Owner
 
 import scalaz.concurrent.Task
@@ -18,5 +19,8 @@ class OwnerRepository(xa: Transactor[Task]) extends Repository {
   import OwnerRepository._
 
   def fetchById(id: String): Task[Owner] =
-    sqlFetchById(id).unique.transact(xa)
+    sqlFetchById(id).option.transact(xa).flatMap {
+      case Some(owner) => Task.now(owner)
+      case None => Task.fail(new NoOwnerFound(id))
+    }
 }
