@@ -22,12 +22,9 @@ final class GameCreator(repos: Repositories, mailer: Mailer, pdf: PDF) extends L
     owner <- repos.owner.fetchById(gameInput.owner)
     cards <- fetchCards(gameInput)
     game = Game.fromInput(gameInput, owner, time, cards)
-    bytes <- generatePdf(game)
-    _ <- repos.game.create(gameInput, time)
-    _ <- pdf.save(bytes)
-    _ <- mailer.sendPDF(game.email, bytes)
-    _ <- mailer.sendGame(game)
-  } yield bytes
+    pdfBytes <- generatePdf(game)
+    _ <- persistAndEmitGame(game, pdfBytes)
+  } yield pdfBytes
 
   private def currentTime: Task[LocalDateTime] = Task.now(LocalDateTime.now())
 
@@ -40,4 +37,11 @@ final class GameCreator(repos: Repositories, mailer: Mailer, pdf: PDF) extends L
     val content = html.pdf.render(game)
     pdf.generate(content.toString)
   }
+
+  private def persistAndEmitGame(game: Game, pdfBytes: Array[Byte]): Task[Unit] = for {
+    _ <- repos.game.create(game)
+    _ <- pdf.save(pdfBytes)
+    _ <- mailer.sendPDF(game.email, pdfBytes)
+    _ <- mailer.sendGame(game)
+  } yield {}
 }

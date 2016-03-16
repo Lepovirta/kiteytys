@@ -1,14 +1,13 @@
 package kiteytys.db
 
-import java.time.LocalDateTime
-
 import doobie.imports._
-import kiteytys.GameInput
+import kiteytys.Game
+
 import scalaz.concurrent.Task
 
 object GameRepository extends DoobieImplicits {
 
-  def sqlCreate(game: GameInput, createdAt: LocalDateTime): Update0 =
+  def sqlCreate(game: Game): Update0 =
       sql"""
         INSERT INTO game (
           owner, email, createdAt,
@@ -17,11 +16,11 @@ object GameRepository extends DoobieImplicits {
           tediousCard, tediousNum, inspiringCard, inspiringNum,
           topaasia, topaasiaAnswer, rating
         ) VALUES (
-          ${game.owner}, ${game.email}, $createdAt,
+          ${game.owner.id}, ${game.email}, ${game.createdAt},
           ${game.strong.code}, ${game.strong.grade}, ${game.weak.code}, ${game.weak.grade},
           ${game.important.code}, ${game.important.grade}, ${game.hard.code}, ${game.hard.grade},
           ${game.tedious.code}, ${game.tedious.grade}, ${game.inspiring.code}, ${game.inspiring.grade},
-          ${game.topaasia}, ${game.topaasiaAnswer}, ${game.rating}
+          ${game.topaasia.code}, ${game.topaasiaAnswer}, ${game.rating}
         )
       """.update
 }
@@ -30,6 +29,6 @@ class GameRepository(xa: Transactor[Task]) extends Repository {
 
   import GameRepository._
 
-  def create(game: GameInput, dt: LocalDateTime): Task[Long] =
-    sqlCreate(game, dt).withUniqueGeneratedKeys[Long]("id").transact(xa)
+  def create(game: Game): Task[Long] =
+    sqlCreate(game).withUniqueGeneratedKeys[Long]("id").transact(xa)
 }
