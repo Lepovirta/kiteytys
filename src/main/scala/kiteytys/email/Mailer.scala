@@ -87,7 +87,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
     email.addTo(recipient)
 
     email.setSubject(subject)
-    email.setMsg(message)
+    val _ = email.setMsg(message)
   }
 
   private def send(email: Email, recipient: String): Task[String] = {

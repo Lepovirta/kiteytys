@@ -5,8 +5,7 @@ import java.time.LocalDateTime
 
 import com.typesafe.scalalogging.LazyLogging
 import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
-import doobie.imports.{Composite, Capture, Meta, Transactor}
-import kiteytys.{Card, CardGradeInput}
+import doobie.imports.{Capture, Meta, Transactor}
 import kiteytys.conf.Conf
 import org.flywaydb.core.Flyway
 
@@ -42,7 +41,8 @@ final class Database(conf: Conf.Database) extends LazyLogging {
 
   def init(): Unit = {
     logger.info("Initializing database")
-    flyway.migrate()
+    val result = flyway.migrate()
+    logger.info(s"Successfully applied $result migrations.")
   }
 }
 
