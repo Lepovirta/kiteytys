@@ -25,7 +25,7 @@ final class Http(gameCreator: GameCreator)
     case GET -> Root =>
       Ok(html.index())
 
-    case req @ POST -> Root / "submit" =>
+    case req @ POST -> Root =>
       req.decode[UrlForm] { form =>
         val pdfBytes = gameDataFromForm(form).flatMap(gameCreator.create)
 
