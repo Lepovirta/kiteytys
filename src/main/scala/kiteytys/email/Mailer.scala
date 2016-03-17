@@ -55,7 +55,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
     val subject = "Uusi peli Kiteyttäjässä"
     val message = s"""Pelin tiedot:
       |
-      | Pelitunniste: ${game.owner}
+      | Pelitunniste: ${game.owner.render}
       | Sähköposti: ${game.email}
       |
       | Vahvin: ${game.strong.render}
@@ -65,7 +65,7 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
       | Ikävin: ${game.tedious.render}
       | Innostavin: ${game.inspiring.render}
       |
-      | Topaasia: ${game.topaasia}
+      | Topaasia: ${game.topaasia.subject}
       | Perustelu: ${game.topaasiaAnswer}
       |
       | Hyöty: ${game.rating}

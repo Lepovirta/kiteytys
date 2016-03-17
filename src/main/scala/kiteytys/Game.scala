@@ -84,4 +84,6 @@ final case class Game(
   }
 }
 
-final case class Owner(id: String, name: String)
+final case class Owner(id: String, name: String) {
+  def render: String = s"$id ($name)"
+}
