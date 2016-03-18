@@ -27,25 +27,10 @@ final case class Card(
 object CardGradeInput {
   import FormParsing._
 
-  private val trailingNumber = "\\d+$".r
-
   def fromForm(form: UrlForm, level: CardLevel): Either[Error, CardGradeInput] = for {
-    card <- cardName(form, s"${level.stringId}Card").right
+    card <- stringField(form, s"${level.stringId}Card").right
     grade <- intField(form, s"${level.stringId}Num", min = 1, max = 4).right
   } yield CardGradeInput(card, grade, level)
-
-  private def cardName(form: UrlForm, field: String) =
-    stringField(form, field)
-      .right.map(_.toUpperCase)
-      .right.flatMap(filterCardNumber)
-
-  private def filterCardNumber(s: String): Either[Error, String] =
-    trailingNumber
-      .findFirstIn(s)
-      .flatMap(stringToInt)
-      .filter(n => n >= Card.minCardNumber && n <= Card.maxCardNumber)
-      .map(_ => s)
-      .toRight(InvalidFormat(s))
 }
 
 final case class CardGradeInput(code: Card.Code, grade: Int, level: CardLevel)
