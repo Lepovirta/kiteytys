@@ -7,7 +7,7 @@ object Card {
 
   case class Collection(cards: Map[Code, Card]) extends AnyVal {
     def get(code: Code): Option[Card] = cards.get(code)
-    def apply(code: Code): Card = cards.getOrElse(code, Card(code, code, code))
+    def apply(code: Code): Card = cards.getOrElse(code, Card(code = code, subject = code, sentence = ""))
     def graded(input: CardGradeInput): CardGrade = CardGrade(apply(input.code), input.grade, input.level)
   }
 
