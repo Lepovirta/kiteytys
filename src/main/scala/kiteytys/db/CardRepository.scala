@@ -29,7 +29,9 @@ class CardRepository(xa: Transactor[Task]) extends Repository {
     sqlCreate.withUniqueGeneratedKeys[Card]("code", "subject", "sentence")(card).transact(xa)
 
   def fetchByCodes(codes: Set[Card.Code]): Task[List[Card]] =
-    codes.toList.toNel
+    codes.toList
+      .map(_.toUpperCase)
+      .toNel
       .map(codesList => sqlFetchByCodes(codesList).list.transact(xa))
       .getOrElse(Task.now(Nil))
 }
