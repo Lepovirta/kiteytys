@@ -93,13 +93,23 @@
 
         @for(card <- game.cardGrades) {
         <h3>@card.level.text</h3>
-        <p><span>@card.subject</span> - @card.sentence</p>
+        <p>
+            <span>@card.subject</span>
+            @if(card.sentence.nonEmpty) {
+            - @card.sentence
+            }
+        </p>
         <p>@card.grade</p>
         }
     </div>
     <div class="flow">
         <h2>Topaasia</h2>
-        <p><span>@game.topaasia.subject</span> - @game.topaasia.sentence</p>
+        <p>
+            <span>@game.topaasia.subject</span>
+            @if(game.topaasia.sentence.nonEmpty) {
+            - @game.topaasia.sentence
+            }
+        </p>
         <br>
         <p>@game.topaasiaAnswer</p>
     </div>
