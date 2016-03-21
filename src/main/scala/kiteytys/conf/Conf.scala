@@ -10,15 +10,25 @@ object Conf {
     val port = conf.getInt("port")
   }
 
+  final case class Email(conf: Config) {
+    val responseSubject = conf.getString("responseSubject")
+    val responseMessage = conf.getString("responseMessage")
+    val adminSubject = conf.getString("adminSubject")
+    val attachmentName = conf.getString("attachmentName")
+    val attachmentDescription = conf.getString("attachmentDescription")
+    val adminEmail = conf.getString("adminEmail")
+    val fromName = conf.getString("fromName")
+    val fromEmail = conf.getString("fromEmail")
+
+    val smtp = Smtp(conf.getConfig("smtp"))
+  }
+
   final case class Smtp(conf: Config) {
     val host       = conf.getString("host")
     val port       = conf.getInt("port")
-    val from       = conf.getString("from")
-    val fromName   = conf.getString("fromName")
     val user       = conf.getString("username")
     val password   = conf.getString("password")
     val ssl        = conf.getBoolean("ssl")
-    val adminEmail = conf.getString("adminEmail")
   }
 
   final case class Database(conf: Config) {
@@ -44,6 +54,6 @@ final case class Conf(conf: Config) {
 
   val http         = Http(conf.getConfig("http"))
   val pdf          = Pdf(conf.getConfig("pdf"))
-  val smtp         = Smtp(conf.getConfig("smtp"))
+  val email        = Email(conf.getConfig("email"))
   val database     = Database(conf.getConfig("database"))
 }

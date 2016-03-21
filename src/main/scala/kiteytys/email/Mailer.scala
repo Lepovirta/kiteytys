@@ -9,39 +9,22 @@ import org.apache.commons.mail.{DefaultAuthenticator, Email, EmailAttachment, Em
 
 import scalaz.concurrent.Task
 
-final class Mailer(conf: Conf.Smtp) extends LazyLogging {
+object Mailer {
+  val attachmentMime = "application/pdf"
+}
+
+final class Mailer(conf: Conf.Email) extends LazyLogging {
+  import Mailer._
 
   def sendPDF(recipient: String, data: Array[Byte]): Task[String] = {
     val email = new MultiPartEmail()
 
-    val subject = "Kiteyttäjä"
-    val message = """Moi!
-      |
-      |Toivottavasti pelihetki oli antoisa - tässä Kiteyttäjä. Huomaat Kiteyttäjän visuaalisen kauneusleikkauksen etenemisen tässä matkan varrella.
-      |
-      |Me uskomme palautteen voimaan. Haasta meidät palautteella niin tulet huomaamaan kehityksen seuraavaan pelisessioon mennessä.
-      |
-      |Risut, ruusut ja pajut voi ohjata esimerkiksi johonkin seuraavista:
-      |
-      |galla@galliwashere.com
-      |0400246626
-      |@jussigalla
-      |
-      |innolla,
-      |gällit
-      |
-      |Play. Focus. Do. Repeat""".stripMargin
-
-    val attachmentName = "Kiteyttaja.pdf"
-    val attachmentDescription = "PDF"
-    val attachmentMime = "application/pdf"
-
-    setup(email, recipient, subject, message)
+    setup(email, recipient, conf.responseSubject, conf.responseMessage)
 
     email.attach(
       new ByteArrayDataSource(data, attachmentMime),
-      attachmentName,
-      attachmentDescription,
+      conf.attachmentName,
+      conf.attachmentDescription,
       EmailAttachment.ATTACHMENT
     )
 
@@ -78,26 +61,25 @@ final class Mailer(conf: Conf.Smtp) extends LazyLogging {
 
 
   private def setup(email: Email, recipient: String, subject: String, message: String): Unit = {
-    email.setHostName(conf.host)
-    email.setSmtpPort(conf.port)
-    email.setAuthenticator(new DefaultAuthenticator(conf.user, conf.password))
-    email.setSSLOnConnect(conf.ssl)
+    email.setHostName(conf.smtp.host)
+    email.setSmtpPort(conf.smtp.port)
+    email.setAuthenticator(new DefaultAuthenticator(conf.smtp.user, conf.smtp.password))
+    email.setSSLOnConnect(conf.smtp.ssl)
 
-    email.setFrom(conf.from, conf.fromName)
+    email.setFrom(conf.fromEmail, conf.fromName)
     email.addTo(recipient)
 
     email.setSubject(subject)
     val _ = email.setMsg(message)
   }
 
-  private def send(email: Email, recipient: String): Task[String] = {
+  private def send(email: Email, recipient: String): Task[String] =
     try {
       val result = email.send()
-      logger.info(s"Sent email to ${recipient}. Message ID: $result")
+      logger.info(s"Sent email to $recipient. Message ID: $result")
       Task.now(result)
     } catch {
       case ex: EmailException => Task.fail(ex)
       case ex: IllegalStateException => Task.fail(ex)
     }
-  }
 }

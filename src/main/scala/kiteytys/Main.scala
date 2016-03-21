@@ -14,7 +14,7 @@ object Main extends App with LazyLogging {
   // Setup components
   val conf = Conf.load(Main.args(0))
   val database = new db.Database(conf.database)
-  val mailer = new Mailer(conf.smtp)
+  val mailer = new Mailer(conf.email)
   val pdf = new PDF(conf.pdf)
   val gameCreator = new GameCreator(database.repos, mailer, pdf)
   val http = new Http(gameCreator)
