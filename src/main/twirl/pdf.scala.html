@@ -31,7 +31,7 @@
         }
         .flow {
             width: 80%;
-            padding: 1.5em;
+            padding: 1em;
             margin: 1.5em auto;
             background: #3a3a3c;
         }
@@ -68,6 +68,9 @@
             font-size: 25px;
             line-height: 32px;
         }
+        h3 {
+          text-transform: uppercase;
+        }
         footer {
             font-weight: bold;
             padding: 1em 0;
@@ -98,8 +101,8 @@
             @if(card.sentence.nonEmpty) {
             - @card.sentence
             }
+            &nbsp;<span>@card.grade</span>
         </p>
-        <p>@card.grade</p>
         }
     </div>
     <div class="flow">
@@ -109,9 +112,8 @@
             @if(game.topaasia.sentence.nonEmpty) {
             - @game.topaasia.sentence
             }
+            &nbsp;<span>@game.topaasiaAnswer</span>
         </p>
-        <br>
-        <p>@game.topaasiaAnswer</p>
     </div>
     <div class="flow">
         <p>Käytettyyn aikaan nähden saatu hyöty</p>
