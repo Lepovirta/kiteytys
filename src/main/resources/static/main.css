@@ -21,7 +21,7 @@ body {
     font-size: 18px; font-size: 1.8rem;
     line-height: 3.2rem;
     font-family: "Semplicita Medium", "Helvetica", sans-serif;
-    background: url(background.jpg);
+    background: url(bg2016.jpg);
     background-size: cover;
 }
 
@@ -69,7 +69,7 @@ textarea {
     border: 1px solid transparent;
     border-radius: 3px;
     line-height: 2em;
-    background: #EEE;
+    background: #DEDCDD;
     padding: 5px 10px;
 }
 
@@ -147,11 +147,11 @@ button:active {
 }
 
 .four label:hover {
-    background: #EEE;
+    background: #DEDCDD;
 }
 
 .five label:hover {
-    background: #EEE;
+    background: #DEDCDD;
 }
 
 ::selection {
