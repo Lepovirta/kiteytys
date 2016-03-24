@@ -224,12 +224,16 @@ h1 {
 }
 
 .row {
-    margin: 1em 0;
+    margin: 0.25em 0;
     clear: both;
 }
 
 .error {
     color: #d44f7e;
+    border-left: 5px solid #d44f7e;
+    padding-left: 1em;
+    line-height: 3em;
+    background: #FFF;
 }
 
 label.error {
