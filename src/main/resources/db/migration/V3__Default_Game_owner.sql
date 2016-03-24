@@ -1,0 +1,1 @@
+INSERT INTO owner (id, name) VALUES ('kiteytys', 'Kiteytys');
