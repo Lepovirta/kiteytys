@@ -68,7 +68,7 @@
             font-size: 20px;
             line-height: 26px;
         }
-        h3 {
+        h3.upper {
           text-transform: uppercase;
         }
         footer {
@@ -92,10 +92,10 @@
         <p>Kiteyttäjä täytetty: <span>@game.renderDate</span></p>
     </div>
     <div class="flow">
-        <h2>Päätetyt kortit (4 = paras)</h2>
+        <h2>Valitut kortit näkökulmakorttien mukaisesti (numero = kehitystarpeen määrä)</h2>
 
         @for(card <- game.cardGrades) {
-        <h3>@card.level.text</h3>
+        <h3 class="upper">@card.level.text</h3>
         <p>
             <span>@card.subject</span>
             @if(card.sentence.nonEmpty) {
@@ -107,16 +107,19 @@
     </div>
     <div class="flow">
         <h2>Topaasia</h2>
+        <h3>Kehitystarpeeltaan kiireellisin ja oleellisin kortti</h3>
         <p>
             <span>@game.topaasia.subject</span>
             @if(game.topaasia.sentence.nonEmpty) {
             - @game.topaasia.sentence
             }
-            - <span>@game.topaasiaAnswer</span>
         </p>
+        <h3>Miten kehitämme?</h3>
+        <p>@game.topaasiaAnswer<p>
     </div>
     <div class="flow">
-        <p>Käytettyyn aikaan nähden saatu hyöty <span>@game.rating</span></span>
+        <h2>Pelisession arviointi</h2>
+        <p>Pelisessioon käytettyyn aikaan nähden saatu hyöty: <span>@game.rating</span></span>
     </div>
     <footer>Play. Focus. Do. Repeat. - <a href="http://www.galliwashere.com" title="Gälliwashere.com">Gälliwashere.com</a> 2016 &copy;</footer>
 </body>
