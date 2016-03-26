@@ -9,9 +9,19 @@ Dependencies:
 - PostgreSQL
 - wkhtmltopdf
 
-Running:
+Run:
 ```
 sbt "run user.conf"
+```
+
+Deploy:
+```
+./script/deploy.sh
+```
+
+Import card data to production:
+```
+./script/import_cards.sh file.csv
 ```
 
 ## Production
@@ -19,3 +29,4 @@ Dependencies:
 - JRE
 - PostgreSQL
 - wkhtmltopdf
+
