@@ -131,6 +131,10 @@ button:active {
     font-size: 200%;
 }
 
+.overflow {
+    overflow: hidden;
+}
+
 .four label {
     width: 25%;
     display: block;
@@ -138,8 +142,16 @@ button:active {
     clear: none;
     border-radius: 3px;
 }
-.five label {
-    width: 20%;
+.five-wide {
+    width: 30%;
+    display: block;
+    float: left;
+    clear: none;
+    border-radius: 3px;
+}
+
+.five-narrow {
+    width: 13.33%;
     display: block;
     float: left;
     clear: none;
@@ -261,6 +273,9 @@ footer {
     }
     #wrapper {
         margin: 0 auto;
+        width: 100%;
+    }
+    .five label {
         width: 100%;
     }
 }
