@@ -41,15 +41,15 @@ final class Mailer(conf: Conf.Email) extends LazyLogging {
       | Pelitunniste: ${game.owner.render}
       | Sähköposti: ${game.email}
       |
-      | Vahvin: ${game.strong.render}
-      | Heikoin: ${game.weak.render}
-      | Tärkein: ${game.important.render}
-      | Vaikein: ${game.hard.render}
-      | Ikävin: ${game.tedious.render}
-      | Innostavin: ${game.inspiring.render}
+      | Vahvin: ${game.strong.map(_.render).getOrElse("-")}
+      | Heikoin: ${game.weak.map(_.render).getOrElse("-")}
+      | Tärkein: ${game.important.map(_.render).getOrElse("-")}
+      | Vaikein: ${game.hard.map(_.render).getOrElse("-")}
+      | Ikävin: ${game.tedious.map(_.render).getOrElse("-")}
+      | Innostavin: ${game.inspiring.map(_.render).getOrElse("-")}
       |
-      | Topaasia: ${game.topaasia.subject}
-      | Perustelu: ${game.topaasiaAnswer}
+      | Topaasia: ${game.topaasia.map(_.card.subject).getOrElse("-")}
+      | Perustelu: ${game.topaasia.map(_.answer).getOrElse("-")}
       |
       | Hyöty: ${game.rating}
       |""".stripMargin

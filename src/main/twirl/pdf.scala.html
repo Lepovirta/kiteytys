@@ -106,16 +106,18 @@
         }
     </div>
     <div class="flow">
+        @for(topaasia <- game.topaasia) {
         <h2>Topaasia</h2>
         <h3>Kehitystarpeeltaan kiireellisin ja oleellisin kortti</h3>
         <p>
-            <span>@game.topaasia.subject</span>
-            @if(game.topaasia.sentence.nonEmpty) {
-            - @game.topaasia.sentence
+            <span>@topaasia.card.subject</span>
+            @if(topaasia.card.sentence.nonEmpty) {
+            - @topaasia.card.sentence
             }
         </p>
         <h3>Miten kehitämme?</h3>
-        <p>@game.topaasiaAnswer<p>
+        <p>@topaasia.answer<p>
+        }
     </div>
     <div class="flow">
         <h2>Pelisession arviointi</h2>
