@@ -27,10 +27,23 @@ final case class Card(
 object CardGradeInput {
   import FormParsing._
 
-  def fromForm(form: UrlForm, level: CardLevel): Either[Error, CardGradeInput] = for {
-    card <- stringField(form, s"${level.stringId}Card").right
-    grade <- intField(form, s"${level.stringId}Num", min = 1, max = 4).right
-  } yield CardGradeInput(card, grade, level)
+  private def cardField(level: CardLevel) = s"${level.stringId}Card"
+  private def gradeField(level: CardLevel) = s"${level.stringId}Num"
+
+  def fromFormOptional(form: UrlForm, level: CardLevel): Either[Error, Option[CardGradeInput]] =
+    stringInputs(form, level) match {
+      case Some((card, gradeString)) => inputsToCardGrade(level, card, gradeString)
+      case None => Right(None)
+    }
+
+  private def stringInputs(form: UrlForm, level: CardLevel) = for {
+    card <- form.getFirst(cardField(level)).flatMap(nonEmptyString)
+    grade <- form.getFirst(gradeField(level)).flatMap(nonEmptyString)
+  } yield (card, grade)
+
+  private def inputsToCardGrade(level: CardLevel, card: String, gradeString: String) =
+    stringToValidInt(gradeField(level), gradeString, min = 1, max = 4)
+      .right.map(grade => Some(CardGradeInput(card, grade, level)))
 }
 
 final case class CardGradeInput(code: Card.Code, grade: Int, level: CardLevel)
@@ -45,6 +58,22 @@ object CardGrade {
 final case class CardGrade(code: Card.Code, subject: String, sentence: String, grade: Int, level: CardLevel) {
   def render: String = s"$subject ($grade)"
 }
+
+object TopaasiaInput {
+  import FormParsing._
+
+  def fromFormOptional(form: UrlForm): Either[Error, Option[TopaasiaInput]] = {
+    val result = for {
+      code <- form.getFirst("topaasia").flatMap(nonEmptyString)
+      answer <- form.getFirst("topaasiaAnswer")
+    } yield TopaasiaInput(code, answer)
+    Right(result)
+  }
+}
+
+final case class TopaasiaInput(code: Card.Code, answer: String)
+
+final case class Topaasia(card: Card, answer: String)
 
 sealed trait CardLevel {
   def stringId: String

@@ -28,18 +28,34 @@ object FormParsing {
 
   def stringToInt(s: String): Option[Int] = Try(s.toInt).toOption
 
+  def nonEmptyString(s: String): Option[String] =
+    if (s.isEmpty) None
+    else Some(s)
+
   def stringField(form: UrlForm, field: String): Either[Error, String] =
     form.getFirst(field).toRight(MissingField(field))
 
-  def intField(form: UrlForm, field: String,
-    min: Int = Int.MinValue, max: Int = Int.MaxValue): Either[Error, Int] =
-    form.getFirst(field)
-      .flatMap(stringToInt)
-      .toRight(InvalidFormat(field))
-      .right.flatMap { i =>
-        if (i >= min && i <= max) Right(i)
-        else Left(InvalidRange(field, min, max))
-      }
+  def optionalStringField(form: UrlForm, field: String): Either[Error, Option[String]] =
+    Right(form.getFirst(field))
+
+  def intField(form: UrlForm, field: String, min: Int, max: Int): Either[Error, Int] =
+    stringField(form, field).right
+      .flatMap(s => stringToValidInt(field, s, min, max))
+
+  def optionalIntField(form: UrlForm, field: String, min: Int, max: Int): Either[Error, Option[Int]] =
+    form.getFirst(field) match {
+      case Some(s) => stringToValidInt(field, s, min, max).right.map(Some(_))
+      case None => Right(None)
+    }
+
+  def stringToValidInt(field: String, s: String, min: Int, max: Int): Either[Error, Int] =
+    stringToInt(s)
+      .toRight(InvalidFormat(field)).right
+      .flatMap(i => validRange(field, i, min, max))
+
+  private def validRange(field: String, i: Int, min: Int, max: Int) =
+    if (i >= min && i <= max) Right(i)
+    else Left(InvalidRange(field, min, max))
 
   def gameFieldToFinnish(field: String): String = field match {
     case "owner" => "pelitunniste"

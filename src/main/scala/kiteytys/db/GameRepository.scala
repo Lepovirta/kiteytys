@@ -17,10 +17,10 @@ object GameRepository extends DoobieImplicits {
           topaasia, topaasiaAnswer, rating
         ) VALUES (
           ${game.owner.id}, ${game.email}, ${game.createdAt},
-          ${game.strong.code}, ${game.strong.grade}, ${game.weak.code}, ${game.weak.grade},
-          ${game.important.code}, ${game.important.grade}, ${game.hard.code}, ${game.hard.grade},
-          ${game.tedious.code}, ${game.tedious.grade}, ${game.inspiring.code}, ${game.inspiring.grade},
-          ${game.topaasia.code}, ${game.topaasiaAnswer}, ${game.rating}
+          ${game.strong.map(_.code)}, ${game.strong.map(_.grade)}, ${game.weak.map(_.code)}, ${game.weak.map(_.grade)},
+          ${game.important.map(_.code)}, ${game.important.map(_.grade)}, ${game.hard.map(_.code)}, ${game.hard.map(_.grade)},
+          ${game.tedious.map(_.code)}, ${game.tedious.map(_.grade)}, ${game.inspiring.map(_.code)}, ${game.inspiring.map(_.grade)},
+          ${game.topaasia.map(_.card.code)}, ${game.topaasia.map(_.answer)}, ${game.rating}
         )
       """.update
 }

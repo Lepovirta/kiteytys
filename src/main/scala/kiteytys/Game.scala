@@ -9,7 +9,7 @@ object Game {
   import FormParsing._
 
   def fromForm(form: UrlForm): Either[Error, GameInput] = {
-    import CardGradeInput.{fromForm => cardFromForm}
+    import CardGradeInput.{fromFormOptional => cardFromForm}
     import CardLevel._
 
     for {
@@ -21,24 +21,22 @@ object Game {
       hard <- cardFromForm(form, Hard).right
       tedious <- cardFromForm(form, Tedious).right
       inspiring <- cardFromForm(form, Inspiring).right
-      topaasia <- stringField(form, "topaasia").right
-      topaasiaAnswer <- stringField(form, "topaasiaAnswer").right
+      topaasia <- TopaasiaInput.fromFormOptional(form).right
       rating <- intField(form, "rating", min = 1, max = 5).right
-    } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, topaasiaAnswer, rating)
+    } yield GameInput(owner, email, strong, weak, important, hard, inspiring, tedious, topaasia, rating)
   }
 
   def fromInput(game: GameInput, owner: Owner, createdAt: LocalDateTime, cards: Card.Collection): Game =
     Game(
       owner = owner,
       email = game.email,
-      strong = cards.graded(game.strong),
-      weak = cards.graded(game.weak),
-      important = cards.graded(game.important),
-      hard = cards.graded(game.hard),
-      tedious = cards.graded(game.tedious),
-      inspiring = cards.graded(game.inspiring),
-      topaasia = cards(game.topaasia),
-      topaasiaAnswer = game.topaasiaAnswer,
+      strong = game.strong.map(cards.graded),
+      weak = game.weak.map(cards.graded),
+      important = game.important.map(cards.graded),
+      hard = game.hard.map(cards.graded),
+      tedious = game.tedious.map(cards.graded),
+      inspiring = game.inspiring.map(cards.graded),
+      topaasia = game.topaasia.map(t => Topaasia(cards(t.code), t.answer)),
       rating = game.rating,
       createdAt = createdAt
     )
@@ -47,36 +45,34 @@ object Game {
 final case class GameInput(
   owner: String,
   email: String,
-  strong: CardGradeInput,
-  weak: CardGradeInput,
-  important: CardGradeInput,
-  hard: CardGradeInput,
-  tedious: CardGradeInput,
-  inspiring: CardGradeInput,
-  topaasia: Card.Code,
-  topaasiaAnswer: String,
+  strong: Option[CardGradeInput],
+  weak: Option[CardGradeInput],
+  important: Option[CardGradeInput],
+  hard: Option[CardGradeInput],
+  tedious: Option[CardGradeInput],
+  inspiring: Option[CardGradeInput],
+  topaasia: Option[TopaasiaInput],
   rating: Int) {
 
   val cardGrades = List(strong, weak, important, hard, tedious, inspiring)
 
-  val codes: Set[Card.Code] = (cardGrades.map(_.code) :+ topaasia).toSet
+  val codes: Set[Card.Code] = (cardGrades.flatMap(_.map(_.code)) ++ topaasia.map(_.code)).toSet
 }
 
 final case class Game(
   owner: Owner,
   email: String,
-  strong: CardGrade,
-  weak: CardGrade,
-  important: CardGrade,
-  hard: CardGrade,
-  tedious: CardGrade,
-  inspiring: CardGrade,
-  topaasia: Card,
-  topaasiaAnswer: String,
+  strong: Option[CardGrade],
+  weak: Option[CardGrade],
+  important: Option[CardGrade],
+  hard: Option[CardGrade],
+  tedious: Option[CardGrade],
+  inspiring: Option[CardGrade],
+  topaasia: Option[Topaasia],
   rating: Int,
   createdAt: LocalDateTime) {
 
-  val cardGrades = List(strong, weak, important, hard, tedious, inspiring).sorted
+  val cardGrades = List(strong, weak, important, hard, tedious, inspiring).flatten.sorted
 
   def renderDate: String = {
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
