@@ -61,6 +61,7 @@ final class Mailer(conf: Conf.Email) extends LazyLogging {
 
 
   private def setup(email: Email, recipient: String, subject: String, message: String): Unit = {
+    email.setCharset("utf-8")
     email.setHostName(conf.smtp.host)
     email.setSmtpPort(conf.smtp.port)
     email.setAuthenticator(new DefaultAuthenticator(conf.smtp.user, conf.smtp.password))
